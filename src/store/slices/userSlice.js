@@ -4,7 +4,6 @@ const initialState = {
   user: null,
   token: null,
   isLoggedIn: false,
-  isSubscribed: false,
 };
 
 const UserSlice = createSlice({
@@ -12,21 +11,23 @@ const UserSlice = createSlice({
   initialState,
   reducers: {
     setUserDetails(state, action) {
-      state.user = action.payload.userData;
+      state.user = action.payload.user;
       state.token = action.payload.token;
-      state.isSubscribed = action.payload.isSubscribed;
       state.isLoggedIn = true;
+    },
+    updateUser(state, action) {
+      // Merge new user data with existing user data
+      state.user =  {...state.user, ...action.payload};
     },
     logout(state) {
       state.user = null;
       state.token = null;
       state.isLoggedIn = false;
-      state.isSubscribed = [];
     },
   },
 });
 
-export const { setUserDetails, logout } = UserSlice.actions;
+export const { setUserDetails,updateUser, logout } = UserSlice.actions;
 export const selectAuthState = (state) => state.auth;
 export const selectUserDetails = (state) => state.auth.user;
 export const getToken = (state) => state.auth.token;

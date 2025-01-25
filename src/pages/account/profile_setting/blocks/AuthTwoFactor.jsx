@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import axios from "axios";
 import QRCode from "react-qr-code"; // Import QR Code library
 import { KeenIcon } from "@/components";
 import { CommonHexagonBadge } from "@/partials/common";
-import { link } from "@/config"; // Assuming you have a config for backend links
+import { useSelector } from "react-redux";
+import request from "@/services/request";
 
 const AuthTwoFactor = () => {
+  const selector = useSelector((state) => state.auth);
+  const adminId = selector.user.adminId;
   const [password, setPassword] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [error, setError] = useState("");
@@ -74,15 +76,11 @@ const AuthTwoFactor = () => {
     }
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${link.backendLink}/api/auth/update2fa`,
-        {
-          adminId: "76b40fc2-0adb-48c1-acee-db63880e3c83",
-          password,
-          twofa: isTotpEnabled,
-        }
-      );
-      console.log(response.data);
+      const response = await request.post(`/api/auth/update2fa`, {
+        adminId: adminId,
+        password,
+        twofa: isTotpEnabled,
+      });
       if (response.data && response.data.twofa) {
         setQrCodeUrl(response.data.twofa); // Save the URL for QR code generation
         setSuccess("Two-Factor Authentication is Enabled.");

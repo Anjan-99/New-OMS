@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { link } from "@/config"; // Assuming you have a config for backend links
+import { useSelector } from "react-redux";
+import request from "@/services/request";
 
 const DeleteAccount = () => {
+  const selector = useSelector((state) => state.auth);
+  const adminId = selector.user.adminId;
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -23,9 +25,9 @@ const DeleteAccount = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post(
-        `${link.backendLink}/api/auth/delete_admin`,
-        { adminId: "76b40fc2-0adb-48c1-acee-db63880e3c83" }
+      const response = await request.post(
+        `/api/auth/delete_admin`,
+        { adminId: adminId }
       );
       if (response.status === 200) {
         setSuccess("Account successfully deleted.");

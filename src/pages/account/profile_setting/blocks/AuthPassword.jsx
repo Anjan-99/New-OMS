@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { link } from "@/config";
 import { KeenIcon } from "@/components";
+import { useSelector } from "react-redux";
+import request from "@/services/request";
 
 const AuthPassword = () => {
+  const selector = useSelector((state) => state.auth);
+  const adminId = selector.user.adminId;
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,10 +30,10 @@ const AuthPassword = () => {
     }
     setLoading(true);
     try {
-      const response = await axios.put(
-        `${link.backendLink}/api/auth/update_password`,
+      const response = await request.put(
+        `/api/auth/update_password`,
         {
-          adminId: "76b40fc2-0adb-48c1-acee-db63880e3c83",
+          adminId: adminId,
           password: currentPassword,
           newPassword: newPassword,
         }

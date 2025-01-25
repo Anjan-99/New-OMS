@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 import { link } from "@/config";
 import { KeenIcon } from "@/components";
+import { useSelector } from "react-redux";
+import request from "@/services/request";
 
 const Access_create = () => {
+  const selector = useSelector((state) => state.auth);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showCurrent, setShowCurrent] = useState(false);
-
   const roleOptions = [
     { value: "ProfitFolio", label: "ProfitFolio" },
     { value: "DataEdge", label: "DataEdge" },
     { value: "Employee", label: "Employee" },
     { value: "Viewer", label: "Viewer" },
   ];
-
+  const adminId = selector.user.adminId;
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(
-          `${link.backendLink}/api/user/getall_users?adminId=a40e2048-14d9-5264-b328-5dead3197c38`
+        const response = await request.get(
+          `/api/user/getall_users?adminId=${adminId}`
         );
         const userOptions = response.data.users.map((user) => ({
           value: user.userId,

@@ -36,9 +36,6 @@ const Login = () => {
     const dispatch = useDispatch();
     const router = useNavigate();
   const [loading, setLoading] = useState(false);
-
-
-
   const [showPassword, setShowPassword] = useState(false);
   const { currentLayout } = useLayout();
   const formik = useFormik({
@@ -53,7 +50,7 @@ const Login = () => {
       loginAPI(obj)
       .then(async (res) => {
         if (res?.status) {
-          dispatch(setUserDetails(res?.data));
+          dispatch(setUserDetails(res));
           router("/dashboard");
           toast.success("Logged In Successfully");
         } else {
@@ -69,6 +66,7 @@ const Login = () => {
         } else if (e?.message === "Network Error") {
           toast.error(e?.message);
         } else {
+          console.log(e);
           toast.error(e?.response?.data?.message);
         }
       })

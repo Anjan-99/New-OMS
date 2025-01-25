@@ -1,4 +1,4 @@
-export const SERVER_URL = "http://localhost:8080/user";
+export const SERVER_URL = "http://localhost:3000/";
 
 
 export const DEFAULT_BLUR_URL =

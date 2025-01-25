@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Table,
   TableBody,
@@ -25,7 +24,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { link } from "@/config";
+import request from "@/services/request";
+import { useSelector } from "react-redux";
 
 function User_Table() {
   const [data, setData] = useState([]);
@@ -41,12 +41,14 @@ function User_Table() {
     phone: true,
   });
   const itemsPerPage = 10;
+  const selector = useSelector((state) => state.auth);
+  const adminId = selector.user.adminId;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${link.backendLink}/api/user/get_users?adminId=a40e2048-14d9-5264-b328-5dead3197c38`
+        const response = await request.get(
+          `/api/user/get_users?adminId=${adminId}`
         );
         setData(response.data.users);
         setLoading(false);

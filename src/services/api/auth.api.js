@@ -3,7 +3,8 @@ import request from "../request";
 // LOGIN API
 export const loginAPI = async (data) => {
   try {
-    const res = await request.post(`/auth/login`, data);
+    const res = await request.post(`/api/auth/login`, data);
+    // console.log(res.data);
     return await res.data;
   } catch (e) {
     console.error(e);

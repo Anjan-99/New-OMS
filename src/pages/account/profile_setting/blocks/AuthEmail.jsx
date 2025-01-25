@@ -1,18 +1,21 @@
 import { useState } from "react";
-import axios from "axios";
-import { link } from '@/config';
-
-const initialData = {
-  email: "admin@gmail.com",
-  username: "admin",
-};
+import { useSelector } from "react-redux";
+import request from "@/services/request";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@/store/slices/userSlice";
 
 const AuthEmail = () => {
+  const selector = useSelector((state) => state.auth.user);
+  const initialData = {
+    email: selector.email,
+    username: selector.username,
+  };
   const [emailInput, setEmailInput] = useState(initialData.email);
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState(initialData.username);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,17 +28,21 @@ const AuthEmail = () => {
       return;
     }
     try {
-      const response = await axios.put(
-        `${link.backendLink}/api/auth/update_admin`,
-        {
-          adminId: "76b40fc2-0adb-48c1-acee-db63880e3c83",
-          email: emailInput,
-          username: userName,
-        }
-      );
-
+      const response = await request.put(`/api/auth/update_admin`, {
+        adminId: selector?.adminId,
+        email: emailInput,
+        username: userName,
+      });
       if (response.status === 200) {
         setSuccess(true);
+        // Update the user in the redux store
+        dispatch(
+          updateUser({
+            ...selector,
+            email: emailInput, // Update specific fields
+            username: userName,
+          })
+        );
         setTimeout(() => {
           setSuccess(false);
         }, 2000);

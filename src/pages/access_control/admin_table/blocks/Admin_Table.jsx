@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Table,
   TableBody,
@@ -25,7 +24,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { link } from "@/config";
+import request from "@/services/request";
 
 function Admin_Table() {
   const [data, setData] = useState([]);
@@ -41,18 +40,15 @@ function Admin_Table() {
     createdAt: true,
   });
   const itemsPerPage = 10;
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get(
-        //   `${link.backendLink}/api/auth/get_admins`
-        // );
-        // setData(response.data.admins);
-        const response = await axios.get(
-          "https://6790de96af8442fd737817be.mockapi.io/admin"
+        const response = await request.get(
+          `/api/auth/get_admins`
         );
-        setData(response.data);
+        setData(response.data.admins);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching admin data:", error);
