@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -7,9 +7,11 @@ import { KeenIcon } from "@/components";
 import { toAbsoluteUrl } from "@/utils";
 import { useLayout } from "@/providers";
 import { Alert } from "@/components";
-import { useLoginMutation } from "../../userApi";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../AuthSlice";
+/* REDUX IMPORT */
+import { setUserDetails } from "../../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
+import { loginAPI } from "../../../services/api/auth.api";
+import { toast } from "sonner";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -29,34 +31,50 @@ const initialValues = {
   remember: false,
 };
 const Login = () => {
+
+    /* GLOBAL VARIABLES */
+    const dispatch = useDispatch();
+    const router = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [login, { data, error, isLoading, isSuccess, isError }] =
-    useLoginMutation();
-  const { user } = useSelector((state) => state.auth);
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
-  const location = useLocation();
+
+
   const [showPassword, setShowPassword] = useState(false);
   const { currentLayout } = useLayout();
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
-    onSubmit: async (values, { setStatus, setSubmitting }) => {
+    onSubmit: async (values) => {
       setLoading(true);
-      try {
-        const res = await login(values).unwrap();
-        dispatch(setUser({ ...res }));
-        navigate("/");
-      } catch (error) {
-        setStatus(error.data.message);
+      const obj ={
+        email: values.email,
+        password: values.password
       }
-      setLoading(false);
+      loginAPI(obj)
+      .then(async (res) => {
+        if (res?.status) {
+          dispatch(setUserDetails(res?.data));
+          router("/dashboard");
+          toast.success("Logged In Successfully");
+        } else {
+          toast.error(res.message);
+        }
+      })
+      .catch((e) => {
+        if (e?.response?.status === 402) {
+          // setOtpDialog(true);
+          toast.error(e?.response?.data?.message);
+        } else if (e?.response?.status === 409) {
+          toast.error("Password is incorrect");
+        } else if (e?.message === "Network Error") {
+          toast.error(e?.message);
+        } else {
+          toast.error(e?.response?.data?.message);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     },
   });
   const togglePassword = (event) => {
@@ -121,22 +139,14 @@ const Login = () => {
           <span className="border-t border-gray-200 w-full"></span>
         </div>
 
-        <Alert variant="primary">
-          Use{" "}
-          <span className="font-semibold text-gray-900">
-            demo@keenthemes.com
-          </span>{" "}
-          username and{" "}
-          <span className="font-semibold text-gray-900">demo1234</span>{" "}
-          password.
-        </Alert>
-
         {formik.status && <Alert variant="danger">{formik.status}</Alert>}
 
         <div className="flex flex-col gap-1">
           <label className="form-label text-gray-900">Email</label>
           <label className="input">
             <input
+            name="email"
+            id="email"
               placeholder="Enter username"
               autoComplete="off"
               {...formik.getFieldProps("email")}
@@ -175,6 +185,8 @@ const Login = () => {
               className={clsx("form-control", {
                 "is-invalid": formik.touched.password && formik.errors.password,
               })}
+              name="password"
+              id="password"
             />
             <button className="btn btn-icon" onClick={togglePassword}>
               <KeenIcon

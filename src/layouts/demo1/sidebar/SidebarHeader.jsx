@@ -7,7 +7,7 @@ const SidebarHeader = forwardRef((props, ref) => {
   const { layout } = useDemo1Layout();
   const lightLogo = () => (
     <Fragment>
-      <Link to="/" className="dark:hidden">
+      <Link to="/dashboard" className="dark:hidden">
       <div className="flex items-center default-logo gap-2">
           <img
             src={toAbsoluteUrl("/media/app/default-logo.png")}
@@ -20,7 +20,7 @@ const SidebarHeader = forwardRef((props, ref) => {
           className="small-logo min-h-[22px] max-w-[40px]"
         />
       </Link>
-      <Link to="/" className="hidden dark:block">
+      <Link to="/dashboard" className="hidden dark:block">
         <div className="flex items-center default-logo gap-2">
           <img
             src={toAbsoluteUrl("/media/app/default-logo.png")}
@@ -37,7 +37,7 @@ const SidebarHeader = forwardRef((props, ref) => {
     </Fragment>
   );
   const darkLogo = () => (
-    <Link to="/">
+    <Link to="/dashboard">
       <img
         src={toAbsoluteUrl("/media/app/default-logo.png")}
         className="default-logo min-h-[22px] max-w-[30px]"

@@ -1,23 +1,24 @@
 import "@/components/keenicons/assets/styles.css";
 import "./styles/globals.css";
-import axios from "axios";
+
+
+/* STORE */
+import { Providers } from "@/store/Provider";
+
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
-import { setupAxios } from "./auth";
 import { ProvidersWrapper } from "./providers";
 import React from "react";
 
-/**
- * Inject interceptors for axios.
- *
- * @see https://github.com/axios/axios#interceptors
- */
-setupAxios(axios);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <Providers>
     <ProvidersWrapper>
       <App />
     </ProvidersWrapper>
+    </Providers>
+
   </React.StrictMode>
 );

@@ -11,18 +11,30 @@ import { Access_ControlPage } from "@/pages/access_control";
 const AppRoutingSetup = () => {
   return (
     <Routes>
-      {/* <Route element={<RequireAuth />}> */}
+      {/* <Route element={<AuthWrapper />}>
+       
+      </Route> */}
+
       <Route element={<Demo1Layout />}>
-        <Route path="/" element={<DefaultPage />} />
+        <Route path="/dashboard" element={<DefaultPage />} />
         <Route path="/dark-sidebar" element={<Demo1DarkSidebarPage />} />
         <Route path="/user/user_management" element={<User_Table_Page />} />
-        <Route path="/account/profile_setting" element={<ProfileSettingsPage />} />
-        <Route path="/access_control/admin_table" element={<Access_ControlPage />} />
+        <Route
+          path="/account/profile_setting"
+          element={<ProfileSettingsPage />}
+        />
+        <Route
+          path="/access_control/admin_table"
+          element={<Access_ControlPage />}
+        />
       </Route>
+
+      {/* <Route element={<RequireAuth />}> */}
+
       {/* </Route> */}
       <Route path="error/*" element={<ErrorsRouting />} />
-      <Route path="auth/*" element={<AuthPage />} />
-      <Route path="*" element={<Navigate to="/error/404" />} />
+      <Route path="*" element={<AuthPage />} />
+      {/* <Route path="*" element={<Navigate to="/error/404" />} /> */}
     </Routes>
   );
 };

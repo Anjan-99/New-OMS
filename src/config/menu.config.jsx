@@ -2,7 +2,7 @@ export const MENU_SIDEBAR = [
   {
     title: "Dashboards",
     icon: "element-11",
-    path: "/",
+    path: "/dashboard",
   },
   {
     heading: "User",
