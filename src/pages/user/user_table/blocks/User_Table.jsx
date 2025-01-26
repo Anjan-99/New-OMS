@@ -47,10 +47,14 @@ function User_Table() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // const response = await request.get(
+        //   `/api/user/get_users?adminId=${adminId}`
+        // );
+        // setData(response.data.users);
         const response = await request.get(
-          `/api/user/get_users?adminId=${adminId}`
+          `https://6790de96af8442fd737817be.mockapi.io/users`
         );
-        setData(response.data.users);
+        setData(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);

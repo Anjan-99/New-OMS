@@ -47,7 +47,7 @@ const Login = () => {
         email: values.email,
         password: values.password
       }
-      loginAPI(obj)
+      loginAPI({ bypass: true })
       .then(async (res) => {
         if (res?.status) {
           dispatch(setUserDetails(res));

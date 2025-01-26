@@ -1,16 +1,33 @@
 import request from "../request";
 
-// LOGIN API
+// LOGIN API with Bypass
 export const loginAPI = async (data) => {
   try {
+    // Check for bypass condition
+    if (data.bypass) {
+      console.warn("Bypassing API call. Returning mock response.");
+      return {
+        success: true,
+        message: "Bypass successful",
+        user: {
+          id: 1,
+          name: "Test User",
+          email: "testuser@example.com",
+        },
+        token: "mockToken",
+        status: 200,
+      };
+    }
+
+    // Perform the actual API call if no bypass
     const res = await request.post(`/api/auth/login`, data);
-    // console.log(res.data);
     return await res.data;
   } catch (e) {
     console.error(e);
     throw e;
   }
 };
+
 
 // REGISTRATION API
 export const registrationAPI = async (data) => {
