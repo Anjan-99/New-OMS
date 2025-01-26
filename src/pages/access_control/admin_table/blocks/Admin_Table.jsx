@@ -40,14 +40,11 @@ function Admin_Table() {
     createdAt: true,
   });
   const itemsPerPage = 10;
-  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await request.get(
-          `/api/auth/get_admins`
-        );
+        const response = await request.get(`/api/auth/get_admins`);
         setData(response.data.admins);
         setLoading(false);
       } catch (error) {
@@ -113,7 +110,7 @@ function Admin_Table() {
   }
 
   return (
-    <Card>
+    <Card className="dark:bg-coal-300">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>Admin Management</span>

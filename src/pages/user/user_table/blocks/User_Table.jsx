@@ -117,7 +117,7 @@ function User_Table() {
   }
 
   return (
-    <Card>
+    <Card className="dark:bg-coal-300">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>User Management</span>
