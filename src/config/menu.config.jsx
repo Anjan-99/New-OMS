@@ -5,129 +5,47 @@ export const MENU_SIDEBAR = [
     path: "/dashboard",
   },
   {
-    heading: "User",
+    heading: "Pages",
   },
   {
-    title: "Users Management",
+    title: "User Management",
     icon: "users",
-    path: "/user/user_management",
+    children: [
+      {
+        title: "User List",
+        path: "/user/user_management",
+      },
+      {
+        title: "User Create",
+        path: "/user/user_create",
+      },
+    ],
   },
   {
-    title: "Account Settings",
-    icon: "setting",
-    path: "/account/profile_setting",
+    title: "User Group",
+    icon: "users",
+    children: [
+      {
+        title: "Group List",
+        path: "/user/user_group",
+      },
+      {
+        title: "Group Create",
+        path: "/user/user_group_create",
+      },
+    ],
   },
   {
     title: "Access Control",
     icon: "security-user",
     path: "/access_control/admin_table",
   },
-  // {
-  //   title: "Authentication",
-  //   icon: "security-user",
-  //   children: [
-  //     {
-  //       title: "Classic",
-  //       children: [
-  //         {
-  //           title: "Sign In",
-  //           path: "/auth/classic/login",
-  //         },
-  //         {
-  //           title: "Sign Up",
-  //           path: "/auth/classic/signup",
-  //         },
-  //         {
-  //           title: "2FA",
-  //           path: "/auth/classic/2fa",
-  //         },
-  //         {
-  //           title: "Check Email",
-  //           path: "/auth/classic/check-email",
-  //         },
-  //         {
-  //           title: "Reset Password",
-  //           children: [
-  //             {
-  //               title: "Enter Email",
-  //               path: "/auth/classic/reset-password/enter-email",
-  //             },
-  //             {
-  //               title: "Check Email",
-  //               path: "/auth/classic/reset-password/check-email",
-  //             },
-  //             {
-  //               title: "Change Password",
-  //               path: "/auth/classic/reset-password/change",
-  //             },
-  //             {
-  //               title: "Password Changed",
-  //               path: "/auth/classic/reset-password/changed",
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Branded",
-  //       children: [
-  //         {
-  //           title: "Sign In",
-  //           path: "/auth/login",
-  //         },
-  //         {
-  //           title: "Sign Up",
-  //           path: "/auth/signup",
-  //         },
-  //         {
-  //           title: "2FA",
-  //           path: "/auth/2fa",
-  //         },
-  //         {
-  //           title: "Check Email",
-  //           path: "/auth/check-email",
-  //         },
-  //         {
-  //           title: "Reset Password",
-  //           children: [
-  //             {
-  //               title: "Enter Email",
-  //               path: "/auth/reset-password/enter-email",
-  //             },
-  //             {
-  //               title: "Check Email",
-  //               path: "/auth/reset-password/check-email",
-  //             },
-  //             {
-  //               title: "Change Password",
-  //               path: "/auth/reset-password/change",
-  //             },
-  //             {
-  //               title: "Password Changed",
-  //               path: "/auth/reset-password/changed",
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Welcome Message",
-  //       path: "/auth/welcome-message",
-  //     },
-  //     {
-  //       title: "Account Deactivated",
-  //       path: "/auth/account-deactivated",
-  //     },
-  //     {
-  //       title: "Error 404",
-  //       path: "/error/404",
-  //     },
-  //     {
-  //       title: "Error 500",
-  //       path: "/error/500",
-  //     },
-  //   ],
-  // },
+
+  {
+    title: "Account Settings",
+    icon: "setting",
+    path: "/account/profile_setting",
+  },
 ];
 export const MENU_MEGA = [
   {
@@ -801,4 +719,3 @@ export const MENU_MEGA = [
     ],
   },
 ];
-

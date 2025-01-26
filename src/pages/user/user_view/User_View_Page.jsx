@@ -1,13 +1,13 @@
 import { Fragment } from "react";
 import { Container } from "@/components/container";
-import { User_Table_Content } from ".";
-const User_Table_Page = () => {
+import { User_View_Content } from "./User_View_Content";
+const User_View_Page = () => {
   return (
     <Fragment>
       <Container>
-        <User_Table_Content />
+        <User_View_Content />
       </Container>
     </Fragment>
   );
 };
-export { User_Table_Page };
+export { User_View_Page };

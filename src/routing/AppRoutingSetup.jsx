@@ -7,6 +7,10 @@ import { ErrorsRouting } from "@/errors";
 import { User_Table_Page } from "@/pages/user";
 import { ProfileSettingsPage } from "@/pages/account";
 import { Access_ControlPage } from "@/pages/access_control";
+import { User_View_Page } from "@/pages/user";
+import { User_Group_Page } from "@/pages/user";
+import { GroupUpdateContent } from "@/pages/user";
+import {Group_Table_Content} from "@/pages/user";
 
 // Higher-Order Component for Role-Based Access
 const RequireAuth = ({ children, notAllowedRoles = [] }) => {
@@ -36,10 +40,50 @@ const AppRoutingSetup = () => {
           }
         />
         <Route
+          path="/user/user_view"
+          element={
+            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+              <User_View_Page />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/user/user_create"
+          element={
+            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+              <User_View_Page />
+            </RequireAuth>
+          }
+        />
+        <Route
           path="/user/user_management"
           element={
             <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
               <User_Table_Page />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/user/user_group_create"
+          element={
+            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+              <User_Group_Page />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/user/user_group"
+          element={
+            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+              <Group_Table_Content />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/user/group_update"
+          element={
+            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+              <GroupUpdateContent />
             </RequireAuth>
           }
         />

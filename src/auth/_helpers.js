@@ -5,7 +5,6 @@ export function setupAxios(axios) {
   axios.interceptors.request.use(
     (config) => {
       const selector = useSelector((state) => state.auth);
-      console.log(selector);
       const token = selector.token;
       if (selector.token) {
         config.headers.Authorization = `Bearer ${token}`;

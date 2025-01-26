@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
 import {
   Table,
   TableBody,
@@ -28,39 +26,37 @@ import {
 } from "lucide-react";
 import request from "@/services/request";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-function User_Table() {
+function Group_Table() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate();
   const [columnVisibility, setColumnVisibility] = useState({
-    name: true,
-    exchange: true,
-    email: true,
-    phone: true,
+    grpname: true,
+    client_count: true,
   });
   const itemsPerPage = 10;
   const selector = useSelector((state) => state.auth);
   const adminId = selector.user.adminId;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await request.get(
-          `/api/user/get_users?adminId=${adminId}`
+          `api/usergrp/get_groups?adminId=${adminId}`
         );
-        setData(response.data.users);
-        // const response = await request.get(
-        //   `https://6790de96af8442fd737817be.mockapi.io/users`
-        // );
-        // setData(response.data);
+        response.data.groups.forEach((group) => {
+          group.client_count = group.clients.length.toString();
+        });
+        setData(response.data.groups);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching admin data:", error);
         setLoading(false);
       }
     };
@@ -83,20 +79,9 @@ function User_Table() {
     }));
   };
 
-  const getExchangeColor = (exchange) => {
-    switch (exchange) {
-      case "Kotak":
-        return "bg-red-100 text-red-800";
-      case "Jainam":
-        return "bg-green-100 text-green-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   const filteredAndSortedData = data
-    .filter((user) =>
-      Object.values(user).some((value) =>
+    .filter((admin) =>
+      Object.values(admin).some((value) =>
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
     )
@@ -115,36 +100,40 @@ function User_Table() {
     currentPage * itemsPerPage
   );
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   const Handle_View = (id) => {
-    navigate(`/user/user_view?userId=${id}`);
+    navigate(`/user/group_update?groupId=${id}`);
   };
 
   const Handle_Delete = async (id) => {
     try {
-      const response = await request.delete(`/api/user/delete_user?userId=${id}`);
+      // ask for confirmation before deleting
+      if (!window.confirm("Are you sure you want to delete this group?")) {
+        return;
+      }
+      const response = await request.delete(`api/usergrp/delete_group?groupId=${id}&adminId=${adminId}`);
       if (response.status === 200) {
-        alert("User deleted successfully!");
-        const updatedData = data.filter((user) => user.userId !== id);
+        alert("Group deleted successfully!");
+        const updatedData = data.filter((group) => group.groupId !== id);
         setData(updatedData);
       }
     } catch (error) {
-      console.error("Error deleting user:", error);
-      alert("Failed to delete user");
+      console.error("Error deleting group:", error);
+      alert("Failed to delete group");
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Card className="dark:bg-coal-300">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
-          <span>User Management</span>
+          <span>Group Management</span>
           <div className="flex items-center space-x-4">
             <Input
-              placeholder="Search users..."
+              placeholder="Search Group..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -160,28 +149,16 @@ function User_Table() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.name}
-                  onCheckedChange={() => toggleColumnVisibility("name")}
+                  checked={columnVisibility.Name}
+                  onCheckedChange={() => toggleColumnVisibility("grpname")}
                 >
-                  Name
+                  Group Name
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.exchange}
-                  onCheckedChange={() => toggleColumnVisibility("exchange")}
+                  checked={columnVisibility.client_count}
+                  onCheckedChange={() => toggleColumnVisibility("client_count")}
                 >
-                  Exchange
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={columnVisibility.email}
-                  onCheckedChange={() => toggleColumnVisibility("email")}
-                >
-                  Email
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={columnVisibility.phone}
-                  onCheckedChange={() => toggleColumnVisibility("phone")}
-                >
-                  Phone
+                  Client Count
                 </DropdownMenuCheckboxItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -189,42 +166,24 @@ function User_Table() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table className="border ">
-          <TableHeader className="border-b rounded-lg">
+        <Table className="border">
+          <TableHeader className="border-b">
             <TableRow>
-              {columnVisibility.name && (
+              {columnVisibility.grpname && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("name")}
+                  onClick={() => handleSort("grpname")}
                 >
                   Name
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {columnVisibility.exchange && (
+              {columnVisibility.client_count && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("exchange")}
+                  onClick={() => handleSort("client_count")}
                 >
-                  Exchange
-                  <ArrowUpDown className="inline ml-2 h-4 w-4" />
-                </TableHead>
-              )}
-              {columnVisibility.email && (
-                <TableHead
-                  className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("email")}
-                >
-                  Email
-                  <ArrowUpDown className="inline ml-2 h-4 w-4" />
-                </TableHead>
-              )}
-              {columnVisibility.phone && (
-                <TableHead
-                  className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("phone")}
-                >
-                  Phone
+                  Client Count
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
@@ -232,39 +191,29 @@ function User_Table() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedData.map((user) => (
-              <TableRow key={user.userId} className="border-b">
-                {columnVisibility.name && (
-                  <TableCell className="border-r">{user.name}</TableCell>
+            {paginatedData.map((group) => (
+              <TableRow key={group.groupId} className="border-b">
+                {columnVisibility.grpname && (
+                  <TableCell className="border-r">{group.grpname}</TableCell>
                 )}
-                {columnVisibility.exchange && (
+                {columnVisibility.client_count && (
                   <TableCell className="border-r">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getExchangeColor(user.exchange)}`}
-                    >
-                      {user.exchange}
-                    </span>
+                    {group.client_count}
                   </TableCell>
-                )}
-                {columnVisibility.email && (
-                  <TableCell className="border-r">{user.email}</TableCell>
-                )}
-                {columnVisibility.phone && (
-                  <TableCell className="border-r">{user.phone}</TableCell>
                 )}
                 <TableCell>
                   <div className="flex space-x-2">
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => Handle_View(user.userId)}
+                      onClick={() => Handle_View(group.groupId)}
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="destructive"
                       size="icon"
-                      onClick={() => Handle_Delete(user.userId)}
+                      onClick={() => Handle_Delete(group.groupId)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -305,4 +254,4 @@ function User_Table() {
   );
 }
 
-export { User_Table };
+export { Group_Table };

@@ -1,10 +1,13 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { toAbsoluteUrl } from "@/utils";
 import { useSettings } from "@/providers/SettingsProvider";
 import { DefaultTooltip, KeenIcon } from "@/components";
-import { useLanguage } from '@/i18n';
+import { useLanguage } from "@/i18n";
+import { useSelector } from "react-redux";
+import { logout } from "../../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 import {
   MenuItem,
@@ -16,11 +19,15 @@ import {
   MenuIcon,
 } from "@/components/menu";
 const DropdownUser = ({ menuItemRef }) => {
-  const {
-    isRTL
-  } = useLanguage();
+  const selector = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const { isRTL } = useLanguage();
   const { settings, storeSettings } = useSettings();
-  // const { logout } = useAuthContext();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  }
+
   const handleThemeMode = (event) => {
     const newThemeMode = event.target.checked ? "dark" : "light";
     storeSettings({
@@ -41,13 +48,13 @@ const DropdownUser = ({ menuItemRef }) => {
               to="/account/hoteme/get-stard"
               className="text-sm text-gray-800 hover:text-primary font-semibold leading-none"
             >
-              Cody Fisher
+              {selector?.username}
             </Link>
             <a
               href="mailto:c.fisher@gmail.com"
               className="text-xs text-gray-600 hover:text-primary font-medium leading-none"
             >
-              c.fisher@gmail.com
+              {selector?.email}
             </a>
           </div>
         </div>
@@ -242,11 +249,11 @@ const DropdownUser = ({ menuItemRef }) => {
           </div>
         </div>
 
-        {/* <div className="menu-item px-4 py-1.5">
-          <a onClick={logout} className="btn btn-sm btn-light justify-center">
+        <div className="menu-item px-4 py-1.5">
+          <a onClick={handleLogout} className="btn btn-sm btn-light justify-center">
             <FormattedMessage id="USER.MENU.LOGOUT" />
           </a>
-        </div> */}
+        </div>
       </div>
     );
   };

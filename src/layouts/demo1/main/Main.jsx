@@ -4,6 +4,8 @@ import { Outlet, useLocation } from 'react-router';
 import { useMenuCurrentItem } from '@/components/menu';
 import { Footer, Header, Sidebar, useDemo1Layout } from '../';
 import { useMenus } from '@/providers';
+
+
 const Main = () => {
   const {
     layout
@@ -18,7 +20,7 @@ const Main = () => {
   const menuItem = useMenuCurrentItem(pathname, menuConfig);
   useEffect(() => {
     const bodyClass = document.body.classList;
-
+   
     // Add a class to the body element
     bodyClass.add('demo1');
     if (layout.options.sidebar.fixed) bodyClass.add('sidebar-fixed');
