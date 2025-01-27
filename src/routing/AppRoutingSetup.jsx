@@ -11,6 +11,7 @@ import { User_View_Page } from "@/pages/user";
 import { User_Group_Page } from "@/pages/user";
 import { GroupUpdateContent } from "@/pages/user";
 import { Group_Table_Content } from "@/pages/user";
+import { AdminUpdateContent } from "@/pages/access_control";
 
 // Higher-Order Component for Role-Based Access
 const RequireAuth = ({ children, notAllowedRoles = [] }) => {
@@ -106,6 +107,14 @@ const AppRoutingSetup = () => {
           element={
             <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
               <Access_ControlPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/access_control/admin_update"
+          element={
+            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+              <AdminUpdateContent />
             </RequireAuth>
           }
         />

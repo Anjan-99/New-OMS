@@ -46,8 +46,8 @@ const Login = () => {
         email: values.email,
         password: values.password,
       };
-      loginAPI({ bypass: true })
-      // loginAPI(obj)
+      // loginAPI({ bypass: true })
+      loginAPI(obj)
         .then(async (res) => {
           console.log(res);
           if (res?.status) {

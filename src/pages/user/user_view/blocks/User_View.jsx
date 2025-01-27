@@ -42,16 +42,10 @@ const User_View = () => {
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
-      phone: Yup.string().required("Phone number is required"),
+      phone: Yup.string().required("Phone is required").length(10),
       exchange: Yup.object().required("Exchange is required"),
     }),
     onSubmit: async (values) => {
-      // if no change in values, return
-      if ( values.userId && JSON.stringify(values) === JSON.stringify(formik.values) ) {
-        setError("No changes made to the user data");
-        setTimeout(() => setError(""), 5000);
-        return;
-      }
       setLoading(true);
       setError("");
       setSuccess(false);
@@ -62,10 +56,11 @@ const User_View = () => {
           ? `api/user/update_user`
           : `api/user/create_user`;
         const method = values.userId ? "put" : "post";
-        
+        payload.phone = "+91" + payload.phone;
         const response = await request[method](url, payload);
         if (response.status === 200) {
           setSuccess(true);
+          setIsEditable(false);
           setTimeout(() => setSuccess(false), 5000);
           if (!values.userId) formik.resetForm();
         } else {
@@ -104,6 +99,7 @@ const User_View = () => {
             phone: data.phone,
             kotakDetails: data.kotakDetails || {},
           });
+          
         }
       } catch (err) {
         setError("Failed to fetch user data");
@@ -178,7 +174,7 @@ const User_View = () => {
           <label className="form-label block mb-1">Phone</label>
           <input
             className="input w-full"
-            type="text"
+            type="number"
             autoComplete="off"
             {...formik.getFieldProps("phone")}
             placeholder="Phone Number"

@@ -25,6 +25,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import request from "@/services/request";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Admin_Table() {
   const [data, setData] = useState([]);
@@ -33,6 +35,10 @@ function Admin_Table() {
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
+  const selector = useSelector((state) => state.auth);
+  const adminId = selector.user.adminId; // Assuming this comes from the Redux state
+  const navigate = useNavigate();
+
   const [columnVisibility, setColumnVisibility] = useState({
     username: true,
     email: true,
@@ -45,7 +51,11 @@ function Admin_Table() {
     const fetchData = async () => {
       try {
         const response = await request.get(`/api/auth/get_admins`);
-        setData(response.data.admins);
+        // remove self from the list
+        const filteredAdmins = response.data.admins.filter(
+          (admin) => admin.adminId !== adminId
+        );
+        setData(filteredAdmins);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching admin data:", error);
@@ -108,6 +118,30 @@ function Admin_Table() {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  const Handle_View = (id) => {
+    navigate(`/access_control/admin_update?adminId=${id}`);
+  };
+
+  const Handle_Delete = async (id) => {
+    try {
+      // ask for confirmation before deleting
+      if (!window.confirm("Are you sure you want to delete this group?")) {
+        return;
+      }
+      const response = await request.delete(
+        `api/usergrp/delete_group?groupId=${id}&adminId=${adminId}`
+      );
+      if (response.status === 200) {
+        alert("Group deleted successfully!");
+        const updatedData = data.filter((group) => group.groupId !== id);
+        setData(updatedData);
+      }
+    } catch (error) {
+      console.error("Error deleting group:", error);
+      alert("Failed to delete group");
+    }
+  };
 
   return (
     <Card className="dark:bg-coal-300">
@@ -231,7 +265,7 @@ function Admin_Table() {
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => alert(`Edit ${admin.adminId}`)}
+                      onClick={() => Handle_View(admin.adminId)}
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
