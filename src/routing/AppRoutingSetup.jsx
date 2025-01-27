@@ -19,7 +19,6 @@ const RequireAuth = ({ children, notAllowedRoles = [] }) => {
   const userRole = selector.user?.role;
   const twofaEnabled = selector.user?.twofa_enabled;
   const otpVerified = selector.otp_verified;
-  console.log(selector);
   // Redirect if OTP is not verified but 2FA is enabled
   if (twofaEnabled && !otpVerified) {
     return <Navigate to="/2fa" replace />;
