@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { loginAPI } from "../../../services/api/auth.api";
 import { toast } from "sonner";
 
-
 const loginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Wrong email format")
@@ -32,7 +31,7 @@ const initialValues = {
 };
 const Login = () => {
   const router = useNavigate();
-  
+
   /* GLOBAL VARIABLES */
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -47,15 +46,22 @@ const Login = () => {
         email: values.email,
         password: values.password,
       };
-      // loginAPI({ bypass: true })
-      loginAPI(obj)
+      loginAPI({ bypass: true })
+      // loginAPI(obj)
         .then(async (res) => {
+          console.log(res);
           if (res?.status) {
-            dispatch(setUserDetails(res));
-            router("/dashboard");
-            toast.success("Logged In Successfully");
+            if (res?.user?.twofaEnabled) {
+              console.log("2FA enabled");
+              // Pass email to the 2FA page
+              router("/2fa", { state: { email: values.email, token: res.token } });
+            } else {
+              dispatch(setUserDetails(res));
+              toast.success("Login successful!");
+              router("/dashboard");
+            }
           } else {
-            toast.error(res.message);
+            toast.error(res.message || "Login failed");
           }
         })
         .catch((e) => {

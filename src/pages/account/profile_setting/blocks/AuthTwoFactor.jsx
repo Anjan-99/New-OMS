@@ -4,16 +4,20 @@ import { KeenIcon } from "@/components";
 import { CommonHexagonBadge } from "@/partials/common";
 import { useSelector } from "react-redux";
 import request from "@/services/request";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@/store/slices/userSlice";
 
 const AuthTwoFactor = () => {
   const selector = useSelector((state) => state.auth);
   const adminId = selector.user.adminId;
+  
   const [password, setPassword] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isTotpEnabled, setIsTotpEnabled] = useState(false);
+  const [isTotpEnabled, setIsTotpEnabled] = useState(selector.user.twofaEnabled);
+  const dispatch = useDispatch();
 
   const items = [
     {
@@ -90,6 +94,12 @@ const AuthTwoFactor = () => {
       setTimeout(() => {
         setSuccess("");
       }, 2000);
+      dispatch(
+        updateUser({
+          ...selector,
+          twofaEnabled: isTotpEnabled,
+        })
+      );
     } catch (err) {
       setError(
         err.response?.data?.message || "An error occurred while setting up 2FA."

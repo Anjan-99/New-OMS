@@ -17,7 +17,10 @@ const UserSlice = createSlice({
     },
     updateUser(state, action) {
       // Merge new user data with existing user data
-      state.user =  {...state.user, ...action.payload};
+      state.user = { ...state.user, ...action.payload };
+    },
+    verifyOtp: (state) => {
+      state.otpVerified = true;
     },
     logout(state) {
       state.user = null;
@@ -27,7 +30,8 @@ const UserSlice = createSlice({
   },
 });
 
-export const { setUserDetails,updateUser, logout } = UserSlice.actions;
+export const { setUserDetails, updateUser, verifyOtp, logout } =
+  UserSlice.actions;
 export const selectAuthState = (state) => state.auth;
 export const selectUserDetails = (state) => state.auth.user;
 export const getToken = (state) => state.auth.token;

@@ -21,7 +21,7 @@ const Group_update = () => {
     const fetchUsers = async () => {
       try {
         const response = await request.get(
-          `/api/user/getall_users?adminId=${adminId}`
+          `/api/user/get_users?adminId=${adminId}`
         );
         const userOptions = response.data.users.map((user) => ({
           value: user.userId,

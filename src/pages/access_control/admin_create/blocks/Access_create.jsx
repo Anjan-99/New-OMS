@@ -73,8 +73,8 @@ const Access_create = () => {
               : values.user.map((user) => ({ userId: user.value })),
         };
 
-        const response = await axios.post(
-          `${link.backendLink}/api/auth/register`,
+        const response = await request.post(
+          `/api/auth/register`,
           payload
         );
 

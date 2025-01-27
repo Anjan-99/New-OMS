@@ -10,12 +10,19 @@ import { Access_ControlPage } from "@/pages/access_control";
 import { User_View_Page } from "@/pages/user";
 import { User_Group_Page } from "@/pages/user";
 import { GroupUpdateContent } from "@/pages/user";
-import {Group_Table_Content} from "@/pages/user";
+import { Group_Table_Content } from "@/pages/user";
 
 // Higher-Order Component for Role-Based Access
 const RequireAuth = ({ children, notAllowedRoles = [] }) => {
-  const userRole = useSelector((state) => state.auth.user.role);
-
+  const selector = useSelector((state) => state.auth);
+  const userRole = selector.user?.role;
+  const twofaEnabled = selector.user?.twofa_enabled;
+  const otpVerified = selector.otp_verified;
+  console.log(selector);
+  // Redirect if OTP is not verified but 2FA is enabled
+  if (twofaEnabled && !otpVerified) {
+    return <Navigate to="/2fa" replace />;
+  }
   if (notAllowedRoles.includes(userRole)) {
     return <Navigate to="/error/unauthorized" />; // Redirect if role is not allowed
   }
@@ -28,7 +35,6 @@ const AppRoutingSetup = () => {
       {/* Public Routes */}
       <Route path="*" element={<AuthPage />} />
       <Route path="error/*" element={<ErrorsRouting />} />
-
       {/* Protected Routes */}
       <Route element={<Demo1Layout />}>
         <Route
@@ -66,7 +72,7 @@ const AppRoutingSetup = () => {
         <Route
           path="/user/user_group_create"
           element={
-            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+            <RequireAuth notAllowedRoles={[]}>
               <User_Group_Page />
             </RequireAuth>
           }
@@ -74,7 +80,7 @@ const AppRoutingSetup = () => {
         <Route
           path="/user/user_group"
           element={
-            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+            <RequireAuth notAllowedRoles={[]}>
               <Group_Table_Content />
             </RequireAuth>
           }
@@ -82,7 +88,7 @@ const AppRoutingSetup = () => {
         <Route
           path="/user/group_update"
           element={
-            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+            <RequireAuth notAllowedRoles={[]}>
               <GroupUpdateContent />
             </RequireAuth>
           }
