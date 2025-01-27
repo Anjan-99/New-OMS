@@ -42,22 +42,22 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       setLoading(true);
-      const obj = {
-        email: values.email,
-        password: values.password,
-      };
+
       loginAPI({ bypass: true })
-      // loginAPI(obj)
+        // loginAPI(obj)
         .then(async (res) => {
           console.log(res);
           if (res?.status) {
             if (res?.user?.twofaEnabled) {
               console.log("2FA enabled");
               // Pass email to the 2FA page
-              router("/2fa", { state: { email: values.email, token: res.token } });
+              router("/2fa", {
+                state: { email: values.email, token: res.token },
+              });
             } else {
               dispatch(setUserDetails(res));
               toast.success("Login successful!");
+
               router("/dashboard");
             }
           } else {

@@ -51,6 +51,80 @@ export const MENU_SIDEBAR = [
     path: "/account/profile_setting",
   },
 ];
+
+export const MENU_PROFITFOLIO = [
+  {
+    title: "Dashboards",
+    icon: "element-11",
+    path: "/dashboard",
+  },
+  {
+    heading: "Pages",
+  },
+  {
+    title: "Account Settings",
+    icon: "setting",
+    path: "/account/profile_setting",
+  },
+];
+
+export const MENU_DATAEDGE = [
+  {
+    title: "Dashboards",
+    icon: "element-11",
+    path: "/dashboard",
+  },
+  {
+    heading: "Pages",
+  },
+  {
+    title: "Logs",
+    icon: "data",
+    path: "/logs",
+  },
+];
+
+export const MENU_EMPLOYEE = [
+  {
+    title: "Dashboards",
+    icon: "element-11",
+    path: "/dashboard",
+  },
+  {
+    heading: "Pages",
+  },
+  {
+    title: "User Management",
+    icon: "users",
+    children: [
+      {
+        title: "User List",
+        path: "/user/user_management",
+      },
+      {
+        title: "User Create",
+        path: "/user/user_create",
+      },
+    ],
+  },
+];
+
+export const MENU_VIEWER = [
+  {
+    title: "Dashboards",
+    icon: "element-11",
+    path: "/dashboard",
+  },
+  {
+    heading: "Pages",
+  },
+  {
+    title: "Access Control",
+    icon: "security-user",
+    path: "/access_control/admin_table",
+  },
+];
+
 export const MENU_MEGA = [
   {
     title: "Home",
