@@ -9,7 +9,6 @@ import { useLayout } from "@/providers";
 import { deepMerge } from "@/utils";
 import { demo1LayoutConfig } from "./";
 import {
-  MENU_DATAEDGE,
   MENU_EMPLOYEE,
   MENU_PROFITFOLIO,
   MENU_VIEWER,
@@ -65,10 +64,10 @@ const Demo1LayoutProvider = ({ children }) => {
 
   // Sets the primary and secondary menu configurations
   setMenuConfig("primary", MENU_SIDEBAR);
-  setMenuConfig("profitfolio", MENU_PROFITFOLIO);
-  setMenuConfig("dataedge", MENU_DATAEDGE);
-  setMenuConfig("employee", MENU_EMPLOYEE);
-  setMenuConfig("viewer", MENU_VIEWER);
+  setMenuConfig("ProfitFolio", MENU_PROFITFOLIO);
+  setMenuConfig("DataEdge", MENU_PROFITFOLIO);
+  setMenuConfig("Employee", MENU_EMPLOYEE);
+  setMenuConfig("Viewer", MENU_VIEWER);
   setMenuConfig("secondary", secondaryMenu);
   const { getLayout, updateLayout, setCurrentLayout } = useLayout(); // Layout management methods
 

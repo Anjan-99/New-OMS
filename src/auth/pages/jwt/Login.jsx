@@ -42,9 +42,12 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       setLoading(true);
-
-      loginAPI({ bypass: true })
-        // loginAPI(obj)
+      const obj = {
+        email: values.email,
+        password: values.password,
+      };
+      // loginAPI({ bypass: true })
+      loginAPI(obj)
         .then(async (res) => {
           console.log(res);
           if (res?.status) {

@@ -14,6 +14,7 @@ import {
   MenuTitle,
 } from "@/components/menu";
 import { useMenus } from "@/providers";
+import { useSelector } from "react-redux"; // Import useSelector to access Redux store
 
 const SidebarMenu = () => {
   const linkPl = "ps-[10px]";
@@ -317,10 +318,8 @@ const SidebarMenu = () => {
     );
   };
   const { getMenuConfig } = useMenus();
-  // const user = useSelector((state) => state?.auth?.user);
-  const menuConfig = getMenuConfig(
-    localStorage.getItem("Role") === "User" ? "employee" : "profitfolio"
-  );
+  const user = useSelector((state) => state?.auth?.user);
+  const menuConfig = getMenuConfig(user.role);
 
   return (
     <Menu

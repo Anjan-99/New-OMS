@@ -73,10 +73,7 @@ const Access_create = () => {
               : values.user.map((user) => ({ userId: user.value })),
         };
 
-        const response = await request.post(
-          `/api/auth/register`,
-          payload
-        );
+        const response = await request.post(`/api/auth/register`, payload);
 
         if (response.status === 200) {
           setSuccess(true);
