@@ -40,7 +40,11 @@ export const MENU_SIDEBAR = [
     icon: "security-user",
     path: "/access_control/admin_table",
   },
-
+  {
+    title: "Logs",
+    icon: "data",
+    path: "/logs",
+  },
   {
     title: "Account Settings",
     icon: "setting",
