@@ -51,19 +51,26 @@ function Log_Table() {
     logmsg: true,
   });
   const itemsPerPage = 10;
-
+  const fetchData = async () => {
+    try {
+      const response = await request.get(`/api/logs/getall_logs`);
+      setData(response.data.logs);
+      const userOptionsUnique = [
+        ...new Set(response.data.logs.map((log) => log.user)),
+      ];
+      console.log(response.data.logs);
+      const userOptions = userOptionsUnique.map((user) => ({
+        value: user,
+        label: user,
+      }));
+      setUsers([...new Set(userOptions)]);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching admin data:", error);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await request.get(`/api/logs/getall_logs`);
-        setData(response.data.logs);
-        setUsers([...new Set(response.data.logs.map((log) => log.user))]); // Extract unique users
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching admin data:", error);
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
@@ -108,11 +115,13 @@ function Log_Table() {
   };
 
   const filteredAndSortedData = data
-    .filter((admin) =>
-      Object.values(admin).some((value) =>
+    .filter((log) => {
+      const matchesSearchTerm = Object.values(log).some((value) =>
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    )
+      );
+      const matchesUser = selectedUser === "all" || log.user === selectedUser;
+      return matchesSearchTerm && matchesUser;
+    })
     .sort((a, b) => {
       if (!sortColumn) return 0;
       const valueA = a[sortColumn];
@@ -136,14 +145,13 @@ function Log_Table() {
     const csvContent =
       "data:text/csv;charset=utf-8," +
       [
-        Object.keys(data[0]).join(","), // Add headers
-        ...data.map((log) =>
+        Object.keys(filteredAndSortedData[0]).join(","), // Add headers
+        ...filteredAndSortedData.map((log) =>
           Object.values(log)
             .map((value) => `"${value}"`) // Wrap values in quotes
             .join(",")
         ),
       ].join("\n");
-
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -151,6 +159,37 @@ function Log_Table() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const deleteLogs = async () => {
+    if (filteredAndSortedData.length === 0) {
+      alert("No logs to delete.");
+      return;
+    }
+
+    const logIds = filteredAndSortedData.map((log) => log._id);
+    console.log("Deleting logs with IDs:", logIds);
+    try {
+      const response = await request.post(`/api/logs/delete_logs`, { logIds });
+      console.log("Logs deleted successfully:", response.data);
+      alert("Logs deleted successfully!");
+      // remove deleted logs from the data
+      const updatedData = data.filter((log) => !logIds.includes(log._id));
+      setData(updatedData);
+      // also update the users list
+      const userOptionsUnique = [
+        ...new Set(updatedData.map((log) => log.user)),
+      ];
+      const userOptions = userOptionsUnique.map((user) => ({
+        value: user,
+        label: user,
+      }));
+      setUsers([...new Set(userOptions)]);
+      setSelectedUser("all");
+    } catch (error) {
+      console.error("Error deleting logs:", error);
+      alert("Error deleting logs.");
+    }
   };
 
   return (
@@ -166,9 +205,30 @@ function Log_Table() {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              className="max-w-sm"
+              className="max-w-xs"
             />
-            <Button onClick={exportToCSV}>Export CSV</Button>
+            <Select
+              options={users}
+              value={
+                selectedUser === "all"
+                  ? null
+                  : users.find((user) => user.value === selectedUser)
+              }
+              onChange={(selectedOption) => {
+                setSelectedUser(selectedOption ? selectedOption.value : "all");
+                setCurrentPage(1);
+              }}
+              placeholder="Select user"
+              className="react-select w-96 font-thin text-sm"
+              classNamePrefix="dropdown"
+              isClearable
+            />
+            <Button className="btn bg-danger" onClick={deleteLogs}>
+              Delete Logs
+            </Button>
+            <Button className="btn bg-green-500" onClick={exportToCSV}>
+              Export CSV
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">
@@ -275,7 +335,6 @@ function Log_Table() {
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {/* <TableHead>Actions</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -311,17 +370,6 @@ function Log_Table() {
                 {columnVisibility.logmsg && (
                   <TableCell className="border-r">{logs.logmsg}</TableCell>
                 )}
-                {/* <TableCell>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => alert(`Delete ${logs.adminId}`)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

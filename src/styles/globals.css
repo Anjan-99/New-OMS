@@ -30,6 +30,10 @@
   background-color: #1f212a !important;
 }
 
+/* Input text color in dark mode */
+.dark .react-select .dropdown__control .dropdown__input-container {
+  color: white; /* Adjust this to match your dark mode text color */
+}
 .dark .react-select .dropdown__control .dropdown__value-container .dropdown__placeholder {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.3);
