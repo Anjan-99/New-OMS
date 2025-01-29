@@ -1,5 +1,7 @@
 import { useResponsive, useScrollPosition } from "@/hooks";
-import { Access_create } from "./blocks";
+import {
+  Access_create,
+} from "./blocks";
 import { useEffect, useRef, useState } from "react";
 import { useLayout } from "@/providers";
 
@@ -48,6 +50,7 @@ const AdminCreateContent = () => {
   return (
     <div className="flex grow gap-5 lg:gap-7.5 shadow-lg rounded-lg">
       <div className="flex flex-col items-stretch grow gap-5 lg:gap-7.5">
+
         <Access_create />
       </div>
     </div>

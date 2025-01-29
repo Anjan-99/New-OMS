@@ -1,5 +1,7 @@
 import { useResponsive, useScrollPosition } from "@/hooks";
-import { Access_create } from "./blocks";
+import {
+  Admin_Update,
+} from "./blocks";
 import { useEffect, useRef, useState } from "react";
 import { useLayout } from "@/providers";
 
@@ -16,7 +18,7 @@ const stickySidebarClasses = {
   "demo9-layout": "top-[calc(var(--tw-header-height)+1rem)]",
   "demo10-layout": "top-[1.5rem]",
 };
-const AdminCreateContent = () => {
+const AdminUpdateContent = () => {
   const desktopMode = useResponsive("up", "lg");
   const { currentLayout } = useLayout();
   const [sidebarSticky, setSidebarSticky] = useState(false);
@@ -46,11 +48,12 @@ const AdminCreateContent = () => {
       "top-[calc(var(--tw-header-height)+1rem)]"
     : "top-[calc(var(--tw-header-height)+1rem)]";
   return (
-    <div className="flex grow gap-5 lg:gap-7.5 shadow-lg rounded-lg">
+    <div className="flex grow gap-5 lg:gap-7.5 shadow-lg rounded-lg p-6 pt-0">
       <div className="flex flex-col items-stretch grow gap-5 lg:gap-7.5">
-        <Access_create />
+
+        <Admin_Update />
       </div>
     </div>
   );
 };
-export { AdminCreateContent };
+export { AdminUpdateContent };
