@@ -13,7 +13,9 @@ import { GroupUpdateContent } from "@/pages/user";
 import { Group_Table_Content } from "@/pages/user";
 import { AdminUpdateContent } from "@/pages/access_control";
 import { LogControlPage } from "@/pages/logs";
-
+import { Oms_Page } from "@/pages/oms";
+import { NetposControlPage } from "@/pages/net_position";
+import { HoldingsControlPage } from "@/pages/holding";
 // Higher-Order Component for Role-Based Access
 const RequireAuth = ({ children, notAllowedRoles = [] }) => {
   const selector = useSelector((state) => state.auth);
@@ -123,6 +125,30 @@ const AppRoutingSetup = () => {
           element={
             <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
               <LogControlPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/oms"
+          element={
+            <RequireAuth notAllowedRoles={[]}>
+              <Oms_Page />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/netpos"
+          element={
+            <RequireAuth notAllowedRoles={[]}>
+              <NetposControlPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/holding"
+          element={
+            <RequireAuth notAllowedRoles={[]}>
+              <HoldingsControlPage />
             </RequireAuth>
           }
         />

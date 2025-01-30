@@ -59,3 +59,26 @@
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
 }
+
+/* Multi-value styles for dark mode */
+.dark .react-select .dropdown__control .dropdown__multi-value {
+  background-color: #00000073;
+  border-radius: 0.375em;
+  padding: 0.25em 0.5em;
+  margin: 0.25em 0.5em 0.25em 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dark .react-select .dropdown__control .dropdown__multi-value__label {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dark .react-select .dropdown__control .dropdown__multi-value__remove {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 0.5em;
+}

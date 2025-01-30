@@ -15,16 +15,14 @@ const ShortcutKeysInformation = () => {
   const [open, setOpen] = useState(false);
 
   const shortcuts = [
-    { key: "Ctrl + S", description: "Save the current document." },
-    { key: "Ctrl + C", description: "Copy selected text or items." },
-    { key: "Ctrl + V", description: "Paste from clipboard." },
-    { key: "Ctrl + Z", description: "Undo the last action." },
-    { key: "Ctrl + Y", description: "Redo the last undone action." },
-    { key: "Ctrl + A", description: "Select all items or text." },
-    { key: "Ctrl + F", description: "Find text in the current document." },
-    { key: "Ctrl + P", description: "Print the current page." },
-    { key: "Ctrl + X", description: "Cut selected text or items." },
-    { key: "Alt + Tab", description: "Switch between open applications." },
+    { key: "Shift + B", description: "Select Buy Order" },
+    { key: "Shift + S", description: "Select Sell Order" },
+    { key: "Shift + M", description: "Select Market Order" },
+    { key: "Shift + L", description: "Select Limit Order" },
+    { key: "Shift + E", description: "Select Equity Segment" },
+    { key: "Shift + F", description: "Select Future Segment" },
+    { key: "Shift + O", description: "Select Option Segment" },
+
   ];
 
   return (
@@ -38,7 +36,7 @@ const ShortcutKeysInformation = () => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Shortcut Keys</DialogTitle>
+            <DialogTitle>Shortcut Keys For OMS</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <div className="card-body grid gap-5 lg:gap-7.5 lg:py-7.5 py-5">

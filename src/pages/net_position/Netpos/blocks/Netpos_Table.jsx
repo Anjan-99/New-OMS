@@ -29,7 +29,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
-function Log_Table() {
+function Netpos_Table() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,55 +43,188 @@ function Log_Table() {
   const [users, setUsers] = useState([]);
 
   const [columnVisibility, setColumnVisibility] = useState({
-    logname: true,
-    user: true,
-    role: true,
-    datetime: true,
-    logstatus: true,
-    logmsg: true,
+    id: true,
+    name: true,
+    orderSide: true,
+    ticker: true,
+    qty: true,
+    amount: true,
   });
   const itemsPerPage = 10;
-  const fetchData = async () => {
-    try {
-      const response = await request.get(`/api/logs/getall_logs`);
-      setData(response.data.logs);
-      const userOptionsUnique = [
-        ...new Set(response.data.logs.map((log) => log.user)),
-      ];
-      const userOptions = userOptionsUnique.map((user) => ({
-        value: user,
-        label: user,
-      }));
-      setUsers([...new Set(userOptions)]);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching admin data:", error);
-      setLoading(false);
-    }
-  };
+
   useEffect(() => {
-    fetchData();
+    const demoData = [
+      {
+        id: 1,
+        name: "Alice",
+        orderSide: "Buy",
+        ticker: "AAPL",
+        qty: 10,
+        amount: 1500,
+      },
+      {
+        id: 2,
+        name: "Bob",
+        orderSide: "Sell",
+        ticker: "GOOGL",
+        qty: 5,
+        amount: 2500,
+      },
+      {
+        id: 3,
+        name: "Charlie",
+        orderSide: "Buy",
+        ticker: "MSFT",
+        qty: 8,
+        amount: 2000,
+      },
+      {
+        id: 4,
+        name: "David",
+        orderSide: "Sell",
+        ticker: "AMZN",
+        qty: 3,
+        amount: 3000,
+      },
+      {
+        id: 5,
+        name: "Eve",
+        orderSide: "Buy",
+        ticker: "TSLA",
+        qty: 12,
+        amount: 4000,
+      },
+      {
+        id: 6,
+        name: "Frank",
+        orderSide: "Sell",
+        ticker: "NFLX",
+        qty: 7,
+        amount: 1800,
+      },
+      {
+        id: 7,
+        name: "Grace",
+        orderSide: "Buy",
+        ticker: "FB",
+        qty: 9,
+        amount: 1600,
+      },
+      {
+        id: 8,
+        name: "Hannah",
+        orderSide: "Sell",
+        ticker: "TWTR",
+        qty: 4,
+        amount: 1200,
+      },
+      {
+        id: 9,
+        name: "Ian",
+        orderSide: "Buy",
+        ticker: "BABA",
+        qty: 11,
+        amount: 3300,
+      },
+      {
+        id: 10,
+        name: "Jack",
+        orderSide: "Sell",
+        ticker: "PINS",
+        qty: 6,
+        amount: 1500,
+      },
+      {
+        id: 11,
+        name: "Kimi",
+        orderSide: "Buy",
+        ticker: "SPOT",
+        qty: 14,
+        amount: 2800,
+      },
+      {
+        id: 12,
+        name: "Liam",
+        orderSide: "Sell",
+        ticker: "UBER",
+        qty: 13,
+        amount: 3500,
+      },
+      {
+        id: 13,
+        name: "Mona",
+        orderSide: "Buy",
+        ticker: "LYFT",
+        qty: 10,
+        amount: 2200,
+      },
+      {
+        id: 14,
+        name: "Nina",
+        orderSide: "Sell",
+        ticker: "ZM",
+        qty: 8,
+        amount: 2400,
+      },
+      {
+        id: 15,
+        name: "Oliver",
+        orderSide: "Buy",
+        ticker: "ADBE",
+        qty: 15,
+        amount: 3000,
+      },
+      {
+        id: 16,
+        name: "Paul",
+        orderSide: "Sell",
+        ticker: "CRM",
+        qty: 12,
+        amount: 2600,
+      },
+      {
+        id: 17,
+        name: "Quinn",
+        orderSide: "Buy",
+        ticker: "NVDA",
+        qty: 9,
+        amount: 2700,
+      },
+      {
+        id: 18,
+        name: "Ryan",
+        orderSide: "Sell",
+        ticker: "AMD",
+        qty: 10,
+        amount: 2000,
+      },
+      {
+        id: 19,
+        name: "Sophia",
+        orderSide: "Buy",
+        ticker: "INTC",
+        qty: 11,
+        amount: 2200,
+      },
+      {
+        id: 20,
+        name: "Tom",
+        orderSide: "Sell",
+        ticker: "CSCO",
+        qty: 14,
+        amount: 2800,
+      },
+    ];
+    setData(demoData);
+    setLoading(false);
   }, []);
 
-  const getRoleColor = (role) => {
-    switch (role) {
-      case "ProfitFolio":
-        return "bg-blue-100 text-blue-800";
-      case "Employee":
-        return "bg-green-100 text-green-800";
-      case "DataEdge":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-red-100 text-red-800";
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Success":
-        return "bg-green-100 text-green-800";
-      case "Failed":
-        return "bg-red-100 text-red-800";
+  const getorderSideColor = (orderSide) => {
+    switch (orderSide) {
+      case "Buy":
+        return "bg-green-500 text-white";
+      case "Sell":
+        return "bg-red-500 text-white";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -140,65 +273,14 @@ function Log_Table() {
     return <div>Loading...</div>;
   }
 
-  const exportToCSV = () => {
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [
-        Object.keys(filteredAndSortedData[0]).join(","), // Add headers
-        ...filteredAndSortedData.map((log) =>
-          Object.values(log)
-            .map((value) => `"${value}"`) // Wrap values in quotes
-            .join(",")
-        ),
-      ].join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "logs.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const deleteLogs = async () => {
-    if (filteredAndSortedData.length === 0) {
-      alert("No logs to delete.");
-      return;
-    }
-
-    const logIds = filteredAndSortedData.map((log) => log._id);
-    try {
-      const response = await request.post(`/api/logs/delete_logs`, { logIds });
-      if (response.status !== 200) {
-        alert("Error deleting logs.");
-        return;
-      }
-      alert("Logs deleted successfully!");
-      const updatedData = data.filter((log) => !logIds.includes(log._id));
-      setData(updatedData);
-      const userOptionsUnique = [
-        ...new Set(updatedData.map((log) => log.user)),
-      ];
-      const userOptions = userOptionsUnique.map((user) => ({
-        value: user,
-        label: user,
-      }));
-      setUsers([...new Set(userOptions)]);
-      setSelectedUser("all");
-    } catch (error) {
-      console.error("Error deleting logs:", error);
-      alert("Error deleting logs.");
-    }
-  };
-
   return (
     <Card className="dark:bg-coal-300">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
-          <span>Logs</span>
+          <span>Net Position</span>
           <div className="flex items-center space-x-4">
             <Input
-              placeholder="Search logs..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -206,27 +288,13 @@ function Log_Table() {
               }}
               className="max-w-xs"
             />
-            <Select
-              options={users}
-              value={
-                selectedUser === "all"
-                  ? null
-                  : users.find((user) => user.value === selectedUser)
-              }
-              onChange={(selectedOption) => {
-                setSelectedUser(selectedOption ? selectedOption.value : "all");
-                setCurrentPage(1);
+            <Button
+              variant="destructive"
+              onClick={() => {
+                alert("Square off all positions");
               }}
-              placeholder="Select user"
-              className="react-select w-96 font-thin text-sm"
-              classNamePrefix="dropdown"
-              isClearable
-            />
-            <Button className="btn bg-danger" onClick={deleteLogs}>
-              Delete Logs
-            </Button>
-            <Button className="btn bg-green-500" onClick={exportToCSV}>
-              Export CSV
+            >
+              Square Off
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -236,40 +304,40 @@ function Log_Table() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.logname}
-                  onCheckedChange={() => toggleColumnVisibility("logname")}
+                  checked={columnVisibility.id}
+                  onCheckedChange={() => toggleColumnVisibility("id")}
                 >
-                  logname
+                  ID
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.user}
-                  onCheckedChange={() => toggleColumnVisibility("user")}
+                  checked={columnVisibility.name}
+                  onCheckedChange={() => toggleColumnVisibility("name")}
                 >
-                  User
+                  Name
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.role}
-                  onCheckedChange={() => toggleColumnVisibility("role")}
+                  checked={columnVisibility.orderSide}
+                  onCheckedChange={() => toggleColumnVisibility("orderSide")}
                 >
-                  Role
+                  Order Side
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.datetime}
-                  onCheckedChange={() => toggleColumnVisibility("datetime")}
+                  checked={columnVisibility.ticker}
+                  onCheckedChange={() => toggleColumnVisibility("ticker")}
                 >
-                  Created At
+                  Ticker
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.logstatus}
-                  onCheckedChange={() => toggleColumnVisibility("logstatus")}
+                  checked={columnVisibility.qty}
+                  onCheckedChange={() => toggleColumnVisibility("qty")}
                 >
-                  Log Status
+                  Qty
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.logmsg}
-                  onCheckedChange={() => toggleColumnVisibility("logmsg")}
+                  checked={columnVisibility.amount}
+                  onCheckedChange={() => toggleColumnVisibility("amount")}
                 >
-                  Log Message
+                  Amount
                 </DropdownMenuCheckboxItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -280,95 +348,108 @@ function Log_Table() {
         <Table className="border">
           <TableHeader className="border-b">
             <TableRow>
-              {columnVisibility.logname && (
+              {columnVisibility.id && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("logname")}
+                  onClick={() => handleSort("id")}
                 >
-                  Log Name
+                  ID
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {columnVisibility.user && (
+              {columnVisibility.name && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("user")}
+                  onClick={() => handleSort("name")}
                 >
-                  User
+                  Name
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {columnVisibility.role && (
+              {columnVisibility.orderSide && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("role")}
+                  onClick={() => handleSort("orderSide")}
                 >
-                  Role
+                  Order Side
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {columnVisibility.datetime && (
+              {columnVisibility.ticker && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("datetime")}
+                  onClick={() => handleSort("ticker")}
                 >
-                  Created At
+                  Ticker
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {columnVisibility.logstatus && (
+              {columnVisibility.qty && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("logstatus")}
+                  onClick={() => handleSort("qty")}
                 >
-                  Log Status
+                  Qty
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {columnVisibility.logmsg && (
+              {columnVisibility.amount && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("logmsg")}
+                  onClick={() => handleSort("amount")}
                 >
-                  Log Message
+                  Amount
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedData.map((logs) => (
-              <TableRow key={logs._id} className="border-b">
-                {columnVisibility.logname && (
-                  <TableCell className="border-r">{logs.logname}</TableCell>
+            {paginatedData.map((netpos) => (
+              <TableRow key={netpos.id} className="border-b">
+                {columnVisibility.id && (
+                  <TableCell className="border-r">{netpos.id}</TableCell>
                 )}
-                {columnVisibility.user && (
-                  <TableCell className="border-r">{logs.user}</TableCell>
+                {columnVisibility.name && (
+                  <TableCell className="border-r">{netpos.name}</TableCell>
                 )}
-                {columnVisibility.role && (
+                {columnVisibility.orderSide && (
                   <TableCell className="border-r">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(logs.role)}`}
+                      className={`px-2 py-1 rounded-full text-sm font-medium ${getorderSideColor(netpos.orderSide)}`}
                     >
-                      {logs.role}
+                      {netpos.orderSide}
                     </span>
                   </TableCell>
                 )}
-                {columnVisibility.datetime && (
-                  <TableCell className="border-r">{logs.datetime}</TableCell>
+                {columnVisibility.ticker && (
+                  <TableCell className="border-r">{netpos.ticker}</TableCell>
                 )}
-                {columnVisibility.logstatus && (
-                  <TableCell className="border-r">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(logs.logstatus)}`}
+                {columnVisibility.qty && (
+                  <TableCell className="border-r">{netpos.qty}</TableCell>
+                )}
+                {columnVisibility.amount && (
+                  <TableCell className="border-r">{netpos.amount}</TableCell>
+                )}
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => alert("View")}
                     >
-                      {logs.logstatus}
-                    </span>
-                  </TableCell>
-                )}
-                {columnVisibility.logmsg && (
-                  <TableCell className="border-r">{logs.logmsg}</TableCell>
-                )}
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => alert("Delete")}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -404,4 +485,4 @@ function Log_Table() {
   );
 }
 
-export { Log_Table };
+export { Netpos_Table };

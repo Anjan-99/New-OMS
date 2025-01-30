@@ -5,7 +5,7 @@ const COMMON_MENUS = {
     path: "/dashboard",
   },
   pagesHeading: {
-    heading: "Pages",
+    heading: "Settings",
   },
   userManagement: {
     title: "User Management",
@@ -50,6 +50,30 @@ const COMMON_MENUS = {
     icon: "setting",
     path: "/account/profile_setting",
   },
+  oms: {
+    title: "OMS",
+    icon: "setting-3",
+    children: [
+      {
+        title: "Kotak",
+        path: "/oms",
+      },
+      {
+        title: "Jainam",
+        path: "/dashboard",
+      },
+    ],
+  },
+  net_position: {
+    title: "Net Position",
+    icon: "grid",
+    path : "/netpos"
+  },
+  holdings : {
+    title: "Holdings",
+    icon: "abstract-26",
+    path : "/holding"
+  },
 };
 
 export const MENU_SIDEBAR = [
@@ -64,12 +88,16 @@ export const MENU_SIDEBAR = [
 
 export const MENU_PROFITFOLIO = [
   COMMON_MENUS.dashboards,
+  COMMON_MENUS.oms,
+  COMMON_MENUS.net_position,
+  COMMON_MENUS.holdings,
   COMMON_MENUS.pagesHeading,
   COMMON_MENUS.userManagement,
   COMMON_MENUS.userGroup,
   COMMON_MENUS.accessControl,
   COMMON_MENUS.logs,
   COMMON_MENUS.accountSettings,
+  
 ];
 
 export const MENU_EMPLOYEE = [
