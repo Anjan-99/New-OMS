@@ -103,30 +103,27 @@ const User_View = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [strategyData, userData, groupData] = await Promise.all([
-        request.get(`/api/strategy/get_strategies`),
-        request.get(`/api/user/get_users?adminId=${adminId}`),
-        request.get(`/api/usergrp/get_groups?adminId=${adminId}`),
-      ]);
-
-      const strategyOptions = strategyData.data.strategies.map((strategy) => ({
-        value: strategy.strategyId,
-        label: strategy.name,
-      }));
-      setStrategyOptions(strategyOptions);
-
-      const userOptions = userData.data.users.map((user) => ({
-        value: user.userId,
-        label: user.name,
-      }));
-      setUserOptions(userOptions);
-
-      const groupOptions = groupData.data.groups.map((group) => ({
-        value: group.groupId,
-        label: group.name,
-      }));
-      setGroupOptions(groupOptions);
-
+      // const [strategyData, userData, groupData] = await Promise.all([
+      //   request.get(`/api/strategy/get_strategies`),
+      //   request.get(`/api/user/get_users?adminId=${adminId}`),
+      //   request.get(`/api/usergrp/get_groups?adminId=${adminId}`),
+      // ]);
+      // console.log("strategyData", groupData);
+      // const strategyOptions = strategyData.data.strategies.map((strategy) => ({
+      //   value: strategy.strategyId,
+      //   label: strategy.name,
+      // }));
+      // setStrategyOptions(strategyOptions);
+      // const userOptions = userData.data.users.map((user) => ({
+      //   value: user.userId,
+      //   label: user.name,
+      // }));
+      // setUserOptions(userOptions);
+      // const groupOptions = groupData.data.groups.map((group) => ({
+      //   value: group.groupId,
+      //   label: group.name,
+      // }));
+      // setGroupOptions(groupOptions);
       // Add API call here when ready to fetch data
       // For now, setting demo data
       // const demoData = {
@@ -142,6 +139,98 @@ const User_View = () => {
       //   userGroups: [{ user: userOptions[0], group: groupOptions[0] }],
       // };
       // formik.setValues(demoData);
+
+      // user response
+      //   {
+      //     "data": {
+      //         "users": [
+      //             {
+      //                 "kotakDetails": {
+      //                     "api_key": "gz9SIjNkoGhKqQ8TBiE9sfVSTAka",
+      //                     "mpin": "051235",
+      //                     "api_password": "76vn5th8",
+      //                     "password": "Hard$kotak07",
+      //                     "app_id": "ProfitFolio",
+      //                     "ip_address": "127.1.1.1",
+      //                     "api_secret": "YazoTM8s0tsQenrcur8VnDkuozEa",
+      //                     "client_id": "client50827",
+      //                     "google_client_id": "google"
+      //                 },
+      //                 "_id": "678bb2a15180771c2fd5b795",
+      //                 "exchange": "Kotak",
+      //                 "name": "Hard",
+      //                 "email": "harddhruv@gmail.com",
+      //                 "phone": "+911111111111",
+      //                 "__v": 0,
+      //                 "userId": "d5eb00ae-c5d6-5d8e-8811-2a714bca74a7"
+      //             },
+      //             {
+      //                 "kotakDetails": {
+      //                     "api_key": "",
+      //                     "mpin": "",
+      //                     "api_password": "",
+      //                     "password": "",
+      //                     "app_id": "",
+      //                     "ip_address": "",
+      //                     "api_secret": "",
+      //                     "client_id": "",
+      //                     "google_client_id": ""
+      //                 },
+      //                 "_id": "67973cd13139c4a4c2ac5314",
+      //                 "userId": "59756ad2-5fe5-58e3-b5e3-3560bda5bb83",
+      //                 "exchange": "Jainam",
+      //                 "name": "Maheshbhai Loriya",
+      //                 "email": "maheshloriya2075@gmail.com",
+      //                 "phone": "919909173071",
+      //                 "__v": 0
+      //             }
+      //         ]
+      //     },
+      //     "status": 200,
+      //     "message": "Users fetched successfully"
+      // }
+
+      // group response
+      //   {
+      //     "groups": [
+      //         {
+      //             "_id": "67961faf99c2be39eef73ba6",
+      //             "groupId": "ff75d1e0-c6e9-5799-84cd-04d291d02343",
+      //             "adminId": "a40e2048-14d9-5264-b328-5dead3197c38",
+      //             "grpname": "Admin",
+      //             "clients": [
+      //                 {
+      //                     "userId": "d5eb00ae-c5d6-5d8e-8811-2a714bca74a7",
+      //                     "username": "Hard",
+      //                     "position": "10",
+      //                     "_id": "679b150b4fff56800f0adb1a"
+      //                 },
+      //                 {
+      //                     "userId": "59756ad2-5fe5-58e3-b5e3-3560bda5bb83",
+      //                     "username": "Maheshbhai Loriya",
+      //                     "position": "5",
+      //                     "_id": "679b150b4fff56800f0adb1b"
+      //                 }
+      //             ],
+      //             "__v": 0
+      //         },
+      //         {
+      //             "_id": "679b15204fff56800f0adb32",
+      //             "groupId": "f9c3a98a-45ce-54b2-ab5b-02f9301d2332",
+      //             "adminId": "a40e2048-14d9-5264-b328-5dead3197c38",
+      //             "grpname": "test",
+      //             "clients": [
+      //                 {
+      //                     "userId": "d5eb00ae-c5d6-5d8e-8811-2a714bca74a7",
+      //                     "username": "Hard",
+      //                     "position": "10",
+      //                     "_id": "679b15204fff56800f0adb33"
+      //                 }
+      //             ],
+      //             "__v": 0
+      //         }
+      //     ]
+      // }
     };
     fetchData();
   }, [adminId]);
@@ -163,7 +252,7 @@ const User_View = () => {
         formik.setFieldValue("segments", segmentsOptions[1]);
       } else if (event.shiftKey && event.key === "F") {
         formik.setFieldValue("segments", segmentsOptions[2]);
-      } 
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -173,11 +262,15 @@ const User_View = () => {
     <div className="card pb-2.5">
       <div className="card-header">
         <h3 className="card-title">Order Management System</h3>
-        { formik.values.orderside?.value === "Buy" ? (
-          <span className="badge badge-success px-9 font-extrabold text-xs">BUY</span>
+        {formik.values.orderside?.value === "Buy" ? (
+          <span className="badge badge-success px-9 font-extrabold text-xs">
+            BUY
+          </span>
         ) : formik.values.orderside?.value === "Sell" ? (
-          <span className="badge badge-danger px-9 font-extrabold text-xs">SELL</span>
-        ) : null }
+          <span className="badge badge-danger px-9 font-extrabold text-xs">
+            SELL
+          </span>
+        ) : null}
       </div>
       <form onSubmit={formik.handleSubmit} className="card-body">
         {error && (

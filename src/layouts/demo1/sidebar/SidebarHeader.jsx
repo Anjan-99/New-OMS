@@ -8,29 +8,29 @@ const SidebarHeader = forwardRef((props, ref) => {
   const lightLogo = () => (
     <Fragment>
       <Link to="/dashboard" className="dark:hidden">
-      <div className="flex items-center default-logo gap-2">
-          <img
-            src={toAbsoluteUrl("/media/app/default-logo.png")}
-            className="default-logo min-h-[30px] max-w-[40px]"
-          />
-          <span className="text-black text-2xl font-semibold">ProfitFolio</span>
+      <div className="flex items-center default-logo1 gap-2">
+          {/* <img
+            src={toAbsoluteUrl("/media/app/default-logo1.png")}
+            className="default-logo1 min-h-[30px] max-w-[40px]"
+          /> */}
+          <span className="text-black text-2xl font-semibold">DataEdge</span>
         </div>
-        <img
-          src={toAbsoluteUrl("/media/app/default-logo.png")}
+        {/* <img
+          src={toAbsoluteUrl("/media/app/default-logo1.png")}
           className="small-logo min-h-[22px] max-w-[40px]"
-        />
+        /> */}
       </Link>
       <Link to="/dashboard" className="hidden dark:block">
-        <div className="flex items-center default-logo gap-2">
-          <img
-            src={toAbsoluteUrl("/media/app/default-logo.png")}
-            className="default-logo min-h-[30px] max-w-[40px]"
-          />
-          <span className="text-white text-2xl">ProfitFolio</span>
+        <div className="flex items-center default-logo1 gap-2">
+          {/* <img
+            src={toAbsoluteUrl("/media/app/default-logo1.png")}
+            className="default-logo1 min-h-[30px] max-w-[40px]"
+          /> */}
+          <span className="text-white text-2xl">DataEdge</span>
         </div>
 
         <img
-          src={toAbsoluteUrl("/media/app/default-logo.png")}
+          src={toAbsoluteUrl("/media/app/default-logo1.png")}
           className="small-logo min-h-[22px] max-w-[40px]"
         />
       </Link>
@@ -39,11 +39,11 @@ const SidebarHeader = forwardRef((props, ref) => {
   const darkLogo = () => (
     <Link to="/dashboard">
       <img
-        src={toAbsoluteUrl("/media/app/default-logo.png")}
-        className="default-logo min-h-[22px] max-w-[30px]"
+        src={toAbsoluteUrl("/media/app/default-logo1.png")}
+        className="default-logo1 min-h-[22px] max-w-[30px]"
       />
       <img
-        src={toAbsoluteUrl("/media/app/default-logo.png")}
+        src={toAbsoluteUrl("/media/app/default-logo1.png")}
         className="small-logo min-h-[22px] max-w-[40px]"
       />
     </Link>

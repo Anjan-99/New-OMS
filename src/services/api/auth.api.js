@@ -13,6 +13,7 @@ export const loginAPI = async (data) => {
           id: 1,
           name: "Test User",
           email: "testuser@example.com",
+          role: "ProfitFolio",
         },
         token: "mockToken",
         status: 200,
