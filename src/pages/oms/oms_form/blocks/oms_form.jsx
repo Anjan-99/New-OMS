@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import Select from "react-select";
 import { useSelector } from "react-redux";
 import request from "@/services/request";
+import { FixedSizeList as List } from "react-window";
 
 const User_View = () => {
   const selector = useSelector((state) => state.auth);
@@ -13,6 +14,9 @@ const User_View = () => {
   const [strategyOptions, setStrategyOptions] = useState([]);
   const [userOptions, setUserOptions] = useState([]);
   const [groupOptions, setGroupOptions] = useState([]);
+  const [tickerOptions, setTickerOptions] = useState([]);
+  const [cmOptions, setCmOptions] = useState([]);
+  const [colors, setColors] = useState([]);
   const adminId = selector.user.adminId;
 
   const orderSideOptions = [
@@ -103,6 +107,20 @@ const User_View = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const [tickerData, cmData] = await Promise.all([
+        request.get(`api/jainam/gettickerlist`),
+        request.get(`api/jainam/getcmdata`),
+      ]);
+      const tickerOptions = Object.keys(tickerData.data).map((ticker) => ({
+        value: ticker,
+        label: ticker,
+      }));
+      const cmOptions = Object.keys(cmData.data).map((cm) => ({
+        value: cm,
+        label: cm,
+      }));
+      setCmOptions(cmOptions);
+      setTickerOptions(tickerOptions);
       // const [strategyData, userData, groupData] = await Promise.all([
       //   request.get(`/api/strategy/get_strategies`),
       //   request.get(`/api/user/get_users?adminId=${adminId}`),
@@ -232,6 +250,10 @@ const User_View = () => {
       //     ]
       // }
     };
+    const storedColors = localStorage.getItem("tradingColors");
+    if (storedColors) {
+      setColors(JSON.parse(storedColors));
+    }
     fetchData();
   }, [adminId]);
 
@@ -259,18 +281,67 @@ const User_View = () => {
   }, [formik, orderSideOptions]);
 
   return (
-    <div className="card pb-2.5">
-      <div className="card-header">
+    <div
+      className={`card pb-2.5 ${formik.values.orderside?.value === "Buy" ? "border-green-500" : formik.values.orderside?.value === "Sell" ? "border-red-500" : ""}`}
+    >
+      <div
+        className={`card-header ${formik.values.orderside?.value === "Buy" ? "border-green-500" : formik.values.orderside?.value === "Sell" ? "border-red-500" : ""}`}
+      >
         <h3 className="card-title">Order Management System</h3>
-        {formik.values.orderside?.value === "Buy" ? (
-          <span className="badge badge-success px-9 font-extrabold text-xs">
-            BUY
-          </span>
-        ) : formik.values.orderside?.value === "Sell" ? (
-          <span className="badge badge-danger px-9 font-extrabold text-xs">
-            SELL
-          </span>
-        ) : null}
+        <div className="flex gap-2">
+          {formik.values.orderside?.value === "Buy" ? (
+            <span
+              className="badge px-9 font-extrabold text-xs badge-info"
+              style={{ backgroundColor: colors.buy }}
+            >
+              BUY
+            </span>
+          ) : formik.values.orderside?.value === "Sell" ? (
+            <span
+              className="badge px-9 font-extrabold text-xs badge-info"
+              style={{ backgroundColor: colors.sell }}
+            >
+              SELL
+            </span>
+          ) : null}
+          {formik.values.ordertype?.value === "Market" ? (
+            <span
+              className="badge px-9 font-extrabold text-xs badge-info"
+              style={{ backgroundColor: colors.market }}
+            >
+              MARKET
+            </span>
+          ) : formik.values.ordertype?.value === "Limit" ? (
+            <span
+              className="badge px-9 font-extrabold text-xs badge-info"
+              style={{ backgroundColor: colors.limit }}
+            >
+              LIMIT
+            </span>
+          ) : null}
+          {formik.values.segments?.value === "Equity" ? (
+            <span
+              className="badge px-9 font-extrabold text-xs badge-info"
+              style={{ backgroundColor: colors.equity }}
+            >
+              EQUITY
+            </span>
+          ) : formik.values.segments?.value === "Options" ? (
+            <span
+              className="badge px-9 font-extrabold text-xs badge-info"
+              style={{ backgroundColor: colors.option }}
+            >
+              OPTIONS
+            </span>
+          ) : formik.values.segments?.value === "Futures" ? (
+            <span
+              className="badge px-9 font-extrabold text-xs badge-info"
+              style={{ backgroundColor: colors.future }}
+            >
+              FUTURES
+            </span>
+          ) : null}
+        </div>
       </div>
       <form onSubmit={formik.handleSubmit} className="card-body">
         {error && (
@@ -342,11 +413,29 @@ const User_View = () => {
               className="react-select"
               id="symbol"
               classNamePrefix="dropdown"
-              options={symbolOptions}
+              options={cmOptions}
               {...formik.getFieldProps("symbol")}
               placeholder="Select Symbol"
               onChange={(option) => formik.setFieldValue("symbol", option)}
               value={formik.values.symbol}
+              components={{
+                MenuList: (props) => (
+                  <List
+                    height={35 * 8} // Adjust height according to your requirement
+                    itemCount={
+                      Array.isArray(props.children) ? props.children.length : 0
+                    } // Check if props.children exists
+                    itemSize={35}
+                    width={"100%"}
+                  >
+                    {({ index, style }) => (
+                      <div style={style}>
+                        {Array.isArray(props.children) && props.children[index]}
+                      </div>
+                    )}
+                  </List>
+                ),
+              }}
             />
             {formik.touched.symbol && formik.errors.symbol ? (
               <div className="text-red-500 text-sm">{formik.errors.symbol}</div>
@@ -481,7 +570,7 @@ const User_View = () => {
                   />
                   <button
                     type="button"
-                    className="btn btn-danger"
+                    className="btn btn-danger"B
                     onClick={() => removeUserGroup(index)}
                   >
                     Remove
@@ -500,7 +589,11 @@ const User_View = () => {
         </div> */}
 
         <div className="col-span-3 flex justify-end pt-7">
-          <button type="submit" className="btn btn-primary" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`btn ${formik.values.orderside?.value === "Buy" ? "btn-success" : formik.values.orderside?.value === "Sell" ? "btn-danger" : "btn-primary"}`}
+          >
             {loading ? "Placing Order..." : "Place Order"}
           </button>
         </div>

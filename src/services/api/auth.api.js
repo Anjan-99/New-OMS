@@ -29,7 +29,6 @@ export const loginAPI = async (data) => {
   }
 };
 
-
 // REGISTRATION API
 export const registrationAPI = async (data) => {
   try {

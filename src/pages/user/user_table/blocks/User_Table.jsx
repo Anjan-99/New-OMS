@@ -39,7 +39,7 @@ function User_Table() {
   const navigate = useNavigate();
   const [columnVisibility, setColumnVisibility] = useState({
     name: true,
-    exchange: true,
+    broker: true,
     email: true,
     phone: true,
   });
@@ -83,8 +83,8 @@ function User_Table() {
     }));
   };
 
-  const getExchangeColor = (exchange) => {
-    switch (exchange) {
+  const getbrokerColor = (broker) => {
+    switch (broker) {
       case "Kotak":
         return "bg-red-100 text-red-800";
       case "Jainam":
@@ -166,10 +166,10 @@ function User_Table() {
                   Name
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={columnVisibility.exchange}
-                  onCheckedChange={() => toggleColumnVisibility("exchange")}
+                  checked={columnVisibility.broker}
+                  onCheckedChange={() => toggleColumnVisibility("broker")}
                 >
-                  Exchange
+                  Broker
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
                   checked={columnVisibility.email}
@@ -201,12 +201,12 @@ function User_Table() {
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
-              {columnVisibility.exchange && (
+              {columnVisibility.broker && (
                 <TableHead
                   className="border-r hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSort("exchange")}
+                  onClick={() => handleSort("broker")}
                 >
-                  Exchange
+                  Broker
                   <ArrowUpDown className="inline ml-2 h-4 w-4" />
                 </TableHead>
               )}
@@ -237,12 +237,12 @@ function User_Table() {
                 {columnVisibility.name && (
                   <TableCell className="border-r">{user.name}</TableCell>
                 )}
-                {columnVisibility.exchange && (
+                {columnVisibility.broker && (
                   <TableCell className="border-r">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getExchangeColor(user.exchange)}`}
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getbrokerColor(user.broker)}`}
                     >
-                      {user.exchange}
+                      {user.broker}
                     </span>
                   </TableCell>
                 )}

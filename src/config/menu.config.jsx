@@ -55,11 +55,11 @@ const COMMON_MENUS = {
     icon: "setting-3",
     children: [
       {
-        title: "Kotak",
+        title: "Single Order",
         path: "/oms",
       },
       {
-        title: "Jainam",
+        title: "Multi Order",
         path: "/dashboard",
       },
     ],
@@ -102,9 +102,12 @@ export const MENU_PROFITFOLIO = [
 
 export const MENU_EMPLOYEE = [
   COMMON_MENUS.dashboards,
+  COMMON_MENUS.oms,
+  COMMON_MENUS.net_position,
+  COMMON_MENUS.holdings,
   COMMON_MENUS.pagesHeading,
+  COMMON_MENUS.userManagement,
   COMMON_MENUS.userGroup,
-  COMMON_MENUS.accountSettings,
 ];
 
 export const MENU_VIEWER = [

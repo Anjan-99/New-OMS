@@ -51,7 +51,7 @@ const AppRoutingSetup = () => {
         <Route
           path="/user/user_view"
           element={
-            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+            <RequireAuth notAllowedRoles={["Viewer"]}>
               <User_View_Page />
             </RequireAuth>
           }
@@ -59,7 +59,7 @@ const AppRoutingSetup = () => {
         <Route
           path="/user/user_create"
           element={
-            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+            <RequireAuth notAllowedRoles={["Viewer"]}>
               <User_View_Page />
             </RequireAuth>
           }
@@ -67,7 +67,7 @@ const AppRoutingSetup = () => {
         <Route
           path="/user/user_management"
           element={
-            <RequireAuth notAllowedRoles={["Viewer", "Employee"]}>
+            <RequireAuth notAllowedRoles={["Viewer"]}>
               <User_Table_Page />
             </RequireAuth>
           }

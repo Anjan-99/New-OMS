@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  ArrowBigUpDash,
+  ArrowBigDownDash,
   ArrowUpDown,
   Edit,
   Trash2,
@@ -24,6 +26,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+
 import request from "@/services/request";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -65,8 +68,8 @@ function Holdings_Table() {
         ticker: "GOOGL",
         quantity: 5,
         buyAvg: 2500,
-        ltp: 2550,
-        currentValue: 12750,
+        ltp: 2000,
+        currentValue: 10000,
       },
       {
         id: 3,
@@ -426,56 +429,80 @@ function Holdings_Table() {
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
-                {paginatedData.map((holding) => (
-                  <TableRow key={holding.id} className="border-b">
-                    {columnVisibility.id && (
-                      <TableCell className="border-r">{holding.id}</TableCell>
-                    )}
-                    {columnVisibility.ticker && (
-                      <TableCell className="border-r">
-                        {holding.ticker}
+                {paginatedData.map((holding) => {
+                  const priceChange = holding.ltp - holding.buyAvg;
+                  const priceChangeClass =
+                    priceChange > 0
+                      ? "text-green-600"
+                      : priceChange < 0
+                        ? "text-red-600"
+                        : "";
+
+                  return (
+                    <TableRow key={holding.id} className="border-b">
+                      {columnVisibility.id && (
+                        <TableCell className="border-r">{holding.id}</TableCell>
+                      )}
+                      {columnVisibility.ticker && (
+                        <TableCell className="border-r">
+                          {holding.ticker}
+                        </TableCell>
+                      )}
+                      {columnVisibility.quantity && (
+                        <TableCell className="border-r">
+                          {holding.quantity}
+                        </TableCell>
+                      )}
+                      {columnVisibility.buyAvg && (
+                        <TableCell className="border-r">
+                          {holding.buyAvg}
+                        </TableCell>
+                      )}
+                      {columnVisibility.ltp && (
+                        <TableCell className="border-r">
+                          <span className="flex items-center">
+                            <span className={priceChangeClass}>
+                              {holding.ltp}
+                            </span>
+                            <span className="ml-2 text-sm">
+                              {priceChange > 0 ? (
+                                <ArrowBigUpDash className="h-4 w-4" />
+                              ) : priceChange < 0 ? (
+                                <ArrowBigDownDash className="h-4 w-4" />
+                              ) : null}
+                            </span>
+                          </span>
+                        </TableCell>
+                      )}
+                      {columnVisibility.currentValue && (
+                        <TableCell className="border-r">
+                          {holding.currentValue}
+                        </TableCell>
+                      )}
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          {/* <Button
+              variant="outline"
+              size="icon"
+              onClick={() => alert("View")}
+            >
+              <Edit className="h-4 w-4" />
+            </Button> */}
+                          <Button
+                            variant="destructive"
+                            size=""
+                            onClick={() => alert("Square Off")}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            <span className="">Sqr Off</span>
+                          </Button>
+                        </div>
                       </TableCell>
-                    )}
-                    {columnVisibility.quantity && (
-                      <TableCell className="border-r">
-                        {holding.quantity}
-                      </TableCell>
-                    )}
-                    {columnVisibility.buyAvg && (
-                      <TableCell className="border-r">
-                        {holding.buyAvg}
-                      </TableCell>
-                    )}
-                    {columnVisibility.ltp && (
-                      <TableCell className="border-r">{holding.ltp}</TableCell>
-                    )}
-                    {columnVisibility.currentValue && (
-                      <TableCell className="border-r">
-                        {holding.currentValue}
-                      </TableCell>
-                    )}
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        {/* <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => alert("View")}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button> */}
-                        <Button
-                          variant="destructive"
-                          size=""
-                          onClick={() => alert("Square Off")}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="">Sqr Off</span>
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
 

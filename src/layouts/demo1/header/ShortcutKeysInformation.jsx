@@ -22,13 +22,15 @@ const ShortcutKeysInformation = () => {
     { key: "Shift + E", description: "Select Equity Segment" },
     { key: "Shift + F", description: "Select Future Segment" },
     { key: "Shift + O", description: "Select Option Segment" },
-
   ];
 
   return (
     <div>
       {/* Button to Open Dialog */}
-      <button onClick={() => setOpen(true)} className="btn btn-icon btn-light">
+      <button
+        onClick={() => setOpen(true)}
+        className="btn btn-icon btn-info bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+      >
         <KeenIcon icon="key" />
       </button>
 

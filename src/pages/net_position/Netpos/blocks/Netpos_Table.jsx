@@ -435,18 +435,12 @@ function Netpos_Table() {
                 <TableCell>
                   <div className="flex space-x-2">
                     <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => alert("View")}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
                       variant="destructive"
-                      size="icon"
+                      size=""
                       onClick={() => alert("Delete")}
                     >
                       <Trash2 className="h-4 w-4" />
+                      <span className="">Sqr Off</span>
                     </Button>
                   </div>
                 </TableCell>

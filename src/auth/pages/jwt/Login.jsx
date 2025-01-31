@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import * as Yup from "yup";
@@ -37,6 +37,21 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { currentLayout } = useLayout();
+  const [colors, setColors] = useState({
+    buy: "#00A261",
+    sell: "#E42855",
+    future: "#272A34",
+    option: "#E42855",
+    equity: "#883FFF",
+    market: "#006AE6",
+    limit: "#C59A00",
+  });
+  const storedColors = localStorage.getItem("tradingColors");
+  useEffect(() => {
+    if (storedColors) {
+      setColors(JSON.parse(storedColors));
+    }
+  }, []);
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
@@ -46,14 +61,12 @@ const Login = () => {
         email: values.email,
         password: values.password,
       };
-      loginAPI({ bypass: true })
-      // loginAPI(obj)
+      // loginAPI({ bypass: true })
+      loginAPI(obj)
         .then(async (res) => {
-          console.log(res);
           if (res?.status) {
+            localStorage.setItem("tradingColors", JSON.stringify(colors));
             if (res?.user?.twofaEnabled) {
-              console.log("2FA enabled");
-              // Pass email to the 2FA page
               router("/2fa", {
                 state: { email: values.email, token: res.token },
               });

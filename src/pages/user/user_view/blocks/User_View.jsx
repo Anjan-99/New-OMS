@@ -13,7 +13,7 @@ const User_View = () => {
   const [isEditable, setIsEditable] = useState(false);
   const adminId = selector.user.adminId;
 
-  const exchangeOptions = [
+  const brokerOptions = [
     { value: "Kotak", label: "Kotak" },
     { value: "Jainam", label: "Jainam" },
   ];
@@ -21,7 +21,7 @@ const User_View = () => {
   const formik = useFormik({
     initialValues: {
       userId: "",
-      exchange: null,
+      broker: null,
       name: "",
       email: "",
       phone: "",
@@ -36,6 +36,11 @@ const User_View = () => {
         client_id: "",
         google_client_id: "",
       },
+      jainamDetails: {
+        client_id: "",
+        api_key: "",
+        secret_key: "",
+      },
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
@@ -43,7 +48,7 @@ const User_View = () => {
         .email("Invalid email address")
         .required("Email is required"),
       phone: Yup.string().required("Phone is required").length(10),
-      exchange: Yup.object().required("Exchange is required"),
+      broker: Yup.object().required("Broker is required"),
     }),
     onSubmit: async (values) => {
       setLoading(true);
@@ -51,7 +56,7 @@ const User_View = () => {
       setSuccess(false);
 
       try {
-        const payload = { ...values, exchange: values.exchange.value };
+        const payload = { ...values, broker: values.broker.value };
         const url = values.userId
           ? `api/user/update_user`
           : `api/user/create_user`;
@@ -91,15 +96,12 @@ const User_View = () => {
           const data = response.data.user;
           formik.setValues({
             userId: data.userId,
-            exchange: exchangeOptions.find(
-              (opt) => opt.value === data.exchange
-            ),
+            broker: brokerOptions.find((opt) => opt.value === data.broker),
             name: data.name,
             email: data.email,
             phone: data.phone,
             kotakDetails: data.kotakDetails || {},
           });
-          
         }
       } catch (err) {
         setError("Failed to fetch user data");
@@ -108,7 +110,7 @@ const User_View = () => {
     fetchData();
   }, [adminId]);
 
-  const selectedExchange = formik.values.exchange?.value;
+  const selectedBroker = formik.values.broker?.value;
 
   return (
     <div className="card pb-2.5">
@@ -186,27 +188,27 @@ const User_View = () => {
         </div>
 
         <div>
-          <label className="form-label block mb-1">Exchange</label>
+          <label className="form-label block mb-1">Broker</label>
           <Select
-            options={exchangeOptions}
-            value={formik.values.exchange}
-            onChange={(value) => formik.setFieldValue("exchange", value)}
-            placeholder="Select Exchange"
+            options={brokerOptions}
+            value={formik.values.broker}
+            onChange={(value) => formik.setFieldValue("broker", value)}
+            placeholder="Select Broker"
             className="react-select"
             classNamePrefix="dropdown"
             isDisabled={formik.values.userId && !isEditable}
           />
-          {formik.touched.exchange && formik.errors.exchange ? (
-            <div className="text-red-500 text-sm">{formik.errors.exchange}</div>
+          {formik.touched.broker && formik.errors.broker ? (
+            <div className="text-red-500 text-sm">{formik.errors.broker}</div>
           ) : null}
         </div>
 
-        {selectedExchange === "Kotak" && (
+        {selectedBroker === "Kotak" ? (
           <>
             {Object.keys(formik.values.kotakDetails).map((key) => (
               <div key={key}>
                 <label className="form-label block mb-1">
-                  {key.replace(/_/g, " ")}
+                  {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
                 </label>
                 <input
                   className="input w-full"
@@ -222,7 +224,28 @@ const User_View = () => {
               </div>
             ))}
           </>
-        )}
+        ) : selectedBroker === "Jainam" ? (
+          <>
+            {Object.keys(formik.values.jainamDetails).map((key) => (
+              <div key={key}>
+                <label className="form-label block mb-1">
+                  {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                </label>
+                <input
+                  className="input w-full"
+                  type="text"
+                  autoComplete="off"
+                  value={formik.values.jainamDetails[key]}
+                  onChange={(e) =>
+                    formik.setFieldValue(`jainamDetails.${key}`, e.target.value)
+                  }
+                  placeholder={`Enter ${key.replace(/_/g, " ")}`}
+                  disabled={formik.values.userId && !isEditable}
+                />
+              </div>
+            ))}
+          </>
+        ) : null}
 
         <div className="col-span-3 flex justify-end">
           <button

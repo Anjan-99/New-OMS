@@ -6,7 +6,8 @@ import { useLanguage } from "@/i18n";
 import { useSettings } from "@/providers/SettingsProvider";
 import { KeenIcon } from "@/components";
 import { FormattedMessage } from "react-intl";
-import {ShortcutKeysInformation} from "./ShortcutKeysInformation";
+import { ShortcutKeysInformation } from "./ShortcutKeysInformation";
+import { ColorSettings } from "./ColorSettings";
 
 const HeaderTopbar = () => {
   const { isRTL } = useLanguage();
@@ -23,24 +24,24 @@ const HeaderTopbar = () => {
     <div className="flex items-center gap-2 lg:gap-3.5">
       {/* User Profile Menu */}
       <ShortcutKeysInformation />
-      
+      <ColorSettings />
 
       {/* Theme Toggle - New Style */}
       <button
-        className="btn btn-icon btn-light dark:hidden"
+        className="btn btn-icon bg-slate-100 border-gray-500 dark:hidden"
         data-theme-toggle="true"
         data-tooltip="#theme_mode_dark"
         onClick={() => storeSettings({ themeMode: "dark" })}
       >
-        <i className="ki-outline ki-sun"></i>
+        <i className="ki-filled text-warning text-2xl ki-sun"></i>
       </button>
       <button
-        className="btn btn-icon btn-light hidden dark:flex"
+        className="btn btn-icon bg-slate-100 border-gray-500 hidden dark:flex"
         data-theme-toggle="true"
         data-tooltip="#theme_mode_light"
         onClick={() => storeSettings({ themeMode: "light" })}
       >
-        <i className="ki-outline ki-moon"></i>
+        <i className="ki-duotone text-info text-2xl ki-moon"></i>
       </button>
       <div className="tooltip" id="theme_mode_light">
         Switch to Light mode
