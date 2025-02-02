@@ -80,6 +80,18 @@ const User_View = () => {
   const [clientOptions, setClientOptions] = useState([]);
   const [groupOptions, setGroupOptions] = useState([]);
   const clientsData = { clientName: "", positions: "" };
+  const multiClientsData = {
+    orderside: null,
+    ordertype: null,
+    segments: null,
+    symbol: null,
+    expiry: null,
+    strike: null,
+    strategyOptions: null,
+    optionstype: null,
+    price: "0",
+    clients: [clientsData],
+  };
 
   /* COLORS */
   const [colors, setColors] = useState([]);

@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Navigate, Route, Routes } from "react-router";
 import { useSelector } from "react-redux"; // Import useSelector to access Redux store
-import { DefaultPage, Demo1DarkSidebarPage } from "@/pages/dashboards";
+import { DefaultPage } from "@/pages/dashboards";
 import { AuthPage } from "@/auth";
 import { Demo1Layout } from "@/layouts/demo1";
 import { ErrorsRouting } from "@/errors";
@@ -14,9 +15,11 @@ import { Group_Table_Content } from "@/pages/user";
 import { AdminUpdateContent } from "@/pages/access_control";
 import { LogControlPage } from "@/pages/logs";
 import { Oms_Page } from "@/pages/oms";
+import { MultiOrder_Page } from "@/pages/multi-order";
 import { NetposControlPage } from "@/pages/net_position";
 import { HoldingsControlPage } from "@/pages/holding";
 // Higher-Order Component for Role-Based Access
+
 const RequireAuth = ({ children, notAllowedRoles = [] }) => {
   const selector = useSelector((state) => state.auth);
   const userRole = selector.user?.role;
@@ -133,6 +136,14 @@ const AppRoutingSetup = () => {
           element={
             <RequireAuth notAllowedRoles={[]}>
               <Oms_Page />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/multi-order-oms"
+          element={
+            <RequireAuth notAllowedRoles={[]}>
+              <MultiOrder_Page />
             </RequireAuth>
           }
         />

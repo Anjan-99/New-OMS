@@ -60,19 +60,19 @@ const COMMON_MENUS = {
       },
       {
         title: "Multi Order",
-        path: "/dashboard",
+        path: "/multi-order-oms",
       },
     ],
   },
   net_position: {
     title: "Net Position",
     icon: "grid",
-    path : "/netpos"
+    path: "/netpos",
   },
-  holdings : {
+  holdings: {
     title: "Holdings",
     icon: "abstract-26",
-    path : "/holding"
+    path: "/holding",
   },
 };
 
@@ -97,7 +97,6 @@ export const MENU_PROFITFOLIO = [
   COMMON_MENUS.accessControl,
   COMMON_MENUS.logs,
   COMMON_MENUS.accountSettings,
-  
 ];
 
 export const MENU_EMPLOYEE = [

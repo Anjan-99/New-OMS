@@ -1,8 +1,7 @@
 import { Fragment } from "react";
 import { Container } from "@/components/container";
 import { Oms_Content } from "./oms_Content";
-
-const Oms_Page = () => {
+const MultiOrder_Page = () => {
   return (
     <Fragment>
       <Container>
@@ -11,4 +10,4 @@ const Oms_Page = () => {
     </Fragment>
   );
 };
-export { Oms_Page };
+export { MultiOrder_Page };
