@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useResponsive, useScrollPosition } from "@/hooks";
 import { User_View } from "./blocks";
 import { useEffect, useRef, useState } from "react";
@@ -16,8 +17,8 @@ const stickySidebarClasses = {
   "demo9-layout": "top-[calc(var(--tw-header-height)+1rem)]",
   "demo10-layout": "top-[1.5rem]",
 };
+
 const Oms_Content = () => {
-  const desktopMode = useResponsive("up", "lg");
   const { currentLayout } = useLayout();
   const [sidebarSticky, setSidebarSticky] = useState(false);
 
@@ -45,6 +46,7 @@ const Oms_Content = () => {
     ? stickySidebarClasses[currentLayout.name] ||
       "top-[calc(var(--tw-header-height)+1rem)]"
     : "top-[calc(var(--tw-header-height)+1rem)]";
+
   return (
     <div className="flex grow gap-5 lg:gap-7.5 shadow-lg rounded-lg">
       <div className="flex flex-col items-stretch grow gap-5 lg:gap-7.5">
