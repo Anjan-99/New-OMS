@@ -28,7 +28,7 @@ import request from "@/services/request";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function Group_Table() {
+function Group_Table({limit}) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,7 +39,7 @@ function Group_Table() {
     grpname: true,
     client_count: true,
   });
-  const itemsPerPage = 10;
+  const itemsPerPage = limit || 10
   const selector = useSelector((state) => state.auth);
   const adminId = selector.user.adminId;
   const navigate = useNavigate();

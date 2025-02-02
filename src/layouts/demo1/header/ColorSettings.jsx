@@ -82,7 +82,7 @@ const ColorSettings = () => {
                 {Object.entries(colors).map(([key, color]) => (
                   <div
                     key={key}
-                    className="flex items-center justify-between border border-gray-400 rounded-md p-3.5"
+                    className="flex items-center justify-between border border-gray-300 rounded-md p-3.5"
                   >
                     <div className="flex flex-col">
                       <span className="text-sm font-medium text-gray-900 capitalize">

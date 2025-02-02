@@ -28,20 +28,20 @@ const HeaderTopbar = () => {
 
       {/* Theme Toggle - New Style */}
       <button
-        className="btn btn-icon bg-slate-100 border-gray-500 dark:hidden"
-        data-theme-toggle="true"
-        data-tooltip="#theme_mode_dark"
-        onClick={() => storeSettings({ themeMode: "dark" })}
-      >
-        <i className="ki-filled text-warning text-2xl ki-sun"></i>
-      </button>
-      <button
         className="btn btn-icon bg-slate-100 border-gray-500 hidden dark:flex"
         data-theme-toggle="true"
         data-tooltip="#theme_mode_light"
         onClick={() => storeSettings({ themeMode: "light" })}
       >
-        <i className="ki-duotone text-info text-2xl ki-moon"></i>
+        <i className="ki-solid text-amber-500 text-2xl ki-sun"></i>
+      </button>
+      <button
+        className="btn btn-icon bg-slate-800 border-gray-500  dark:hidden "
+        data-theme-toggle="true"
+        data-tooltip="#theme_mode_dark"
+        onClick={() => storeSettings({ themeMode: "dark" })}
+      >
+        <i className="ki-solid text-info text-2xl ki-moon"></i>
       </button>
       <div className="tooltip" id="theme_mode_light">
         Switch to Light mode

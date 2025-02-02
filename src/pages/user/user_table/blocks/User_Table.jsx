@@ -29,7 +29,7 @@ import {
 import request from "@/services/request";
 import { useSelector } from "react-redux";
 
-function User_Table() {
+function User_Table({limit}) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,7 +43,7 @@ function User_Table() {
     email: true,
     phone: true,
   });
-  const itemsPerPage = 10;
+  const itemsPerPage = limit || 10;
   const selector = useSelector((state) => state.auth);
   const adminId = selector.user.adminId;
 

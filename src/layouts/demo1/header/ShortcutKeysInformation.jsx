@@ -31,7 +31,7 @@ const ShortcutKeysInformation = () => {
         onClick={() => setOpen(true)}
         className="btn btn-icon btn-info bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
       >
-        <KeenIcon icon="key" />
+        <KeenIcon icon="keyboard" />
       </button>
 
       {/* Dialog */}
@@ -46,7 +46,7 @@ const ShortcutKeysInformation = () => {
                 {shortcuts.map((shortcut, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between border border-gray-200 rounded-xl p-3.5"
+                    className="flex items-center justify-between border border-gray-300 rounded-md p-3.5"
                   >
                     <div className="flex flex-col">
                       <span className="text-sm font-medium text-gray-900">
