@@ -713,7 +713,7 @@ const User_View = () => {
                         classNamePrefix="dropdown"
                         options={clientsGroupList}
                         value={allClientsData.find(
-                          (data) => data?.value === data[index]?.value
+                          (option) => option.value === data.clientName
                         )}
                         onChange={(e) => handleClientSelect(index, e)}
                         name="clientName"
