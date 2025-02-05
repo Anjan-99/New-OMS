@@ -42,6 +42,8 @@ const futuresValidationSchema = Yup.object().shape({
 const User_View = () => {
   const selector = useSelector((state) => state.auth);
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
   /* LOADING STATE */
   const [loading, setLoading] = useState(false);
 
@@ -411,6 +413,7 @@ const User_View = () => {
   return (
     <React.Fragment>
       {allOrdersList.map((data, index) => {
+        console.log("All data: ", data);
         return (
           <form key={index}>
             <div
@@ -748,149 +751,102 @@ const User_View = () => {
                 <hr className="my-5" />
 
                 {/* USERS LIST */}
-                {data.clients.length !== 0 ? (
-                  <div className="mt-5">
-                    {/* HEADING */}
-                    <div className="p-0">
-                      <h2 className="text-lg font-bold text-black dark:text-white">
-                        Client/Groups
-                      </h2>
-                    </div>
+                <div className="mt-5">
+                  {/* HEADING */}
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-lg font-bold text-black dark:text-white">
+                      Add clients/groups
+                    </h2>
+                    <button
+                      type="button"
+                      className="bg-white bg-opacity-15 hover:bg-opacity-30 transition-all duration-300 ease-in-out border border-white border-opacity-30 text-sm font-medium text-white px-5 py-2 rounded-md"
+                      onClick={addClient}
+                    >
+                      Add client
+                    </button>
+                  </div>
 
-                    {/* BODY */}
-                    <div className="mt-5">
-                      {data.clients.map((clientData, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex items-center gap-5 mt-5 first:mt-0"
-                          >
-                            <div className="w-full">
-                              <label className="form-label block mb-1">
-                                Client/Group
-                              </label>
-                              <div className="mt-1">
-                                <div className="bg-[#1B1C22] px-3 py-2 border border-[#363843] rounded-md text-sm text-white">
-                                  {
-                                    allClientsData?.find(
-                                      (obj) =>
-                                        obj?.value === clientData?.clientName
-                                    )?.label
-                                  }
+                  {/* BODY */}
+                  <div className="mt-5">
+                    {formik.values.clients.map((data, index) => {
+                      console.log("Client details: ", data);
+                      return (
+                        <div
+                          className="flex items-center gap-5 mt-5 first:mt-0"
+                          key={index}
+                        >
+                          <div className="w-full">
+                            <label className="form-label block mb-1">
+                              Client/Group
+                            </label>
+                            <div className="mt-1">
+                              <Select
+                                className="react-select"
+                                classNamePrefix="dropdown"
+                                options={clientsGroupList}
+                                value={allClientsData.find(
+                                  (data) => data?.value === data[index]?.value
+                                )}
+                                onChange={(e) => handleClientSelect(index, e)}
+                                name="clientName"
+                                placeholder="Select client/group"
+                              />
+                              {showClientError && data?.clientName === "" && (
+                                <div className="mt-1 text-red-500 text-sm">
+                                  Please select client
                                 </div>
-                              </div>
+                              )}
                             </div>
+                          </div>
+
+                          {!groupOptions.find(
+                            (group) => group.value === data.clientName
+                          ) && (
                             <div className="w-full">
                               <label className="form-label block mb-1">
                                 Position
                               </label>
                               <div className="mt-1">
-                                <div className="bg-[#1B1C22] px-3 py-2 border border-[#363843] rounded-md text-sm text-white">
-                                  {clientData?.positions}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mt-5">
-                    {/* HEADING */}
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-lg font-bold text-black dark:text-white">
-                        Add clients/groups
-                      </h2>
-                      <button
-                        type="button"
-                        className="bg-white bg-opacity-15 hover:bg-opacity-30 transition-all duration-300 ease-in-out border border-white border-opacity-30 text-sm font-medium text-white px-5 py-2 rounded-md"
-                        onClick={addClient}
-                      >
-                        Add client
-                      </button>
-                    </div>
-
-                    {/* BODY */}
-                    <div className="mt-5">
-                      {formik.values.clients.map((data, index) => {
-                        return (
-                          <div
-                            className="flex items-center gap-5 mt-5 first:mt-0"
-                            key={index}
-                          >
-                            <div className="w-full">
-                              <label className="form-label block mb-1">
-                                Client/Group
-                              </label>
-                              <div className="mt-1">
-                                <Select
-                                  className="react-select"
-                                  classNamePrefix="dropdown"
-                                  options={clientsGroupList}
-                                  value={allClientsData.find(
-                                    (data) => data?.value === data[index]?.value
-                                  )}
-                                  onChange={(e) => handleClientSelect(index, e)}
-                                  name="clientName"
-                                  placeholder="Select client/group"
+                                <input
+                                  className="input"
+                                  type="text"
+                                  name="positions"
+                                  value={data.positions}
+                                  onChange={(e) =>
+                                    handlePositionsEntered(index, e)
+                                  }
+                                  placeholder="No. of positions"
                                 />
-                                {showClientError && data?.clientName === "" && (
+                                {showClientError && data?.positions === "" && (
                                   <div className="mt-1 text-red-500 text-sm">
-                                    Please select client
+                                    Please enter positions
                                   </div>
                                 )}
                               </div>
                             </div>
+                          )}
 
-                            {!groupOptions.find(
-                              (group) => group.value === data.clientName
-                            ) && (
-                              <div className="w-full">
-                                <label className="form-label block mb-1">
-                                  Position
-                                </label>
-                                <div className="mt-1">
-                                  <input
-                                    className="input"
-                                    type="text"
-                                    name="positions"
-                                    value={data.positions}
-                                    onChange={(e) =>
-                                      handlePositionsEntered(index, e)
-                                    }
-                                    placeholder="No. of positions"
-                                  />
-                                  {showClientError &&
-                                    data?.positions === "" && (
-                                      <div className="mt-1 text-red-500 text-sm">
-                                        Please enter positions
-                                      </div>
-                                    )}
-                                </div>
-                              </div>
-                            )}
-
-                            {formik.values.clients.length !== 1 && (
-                              <button
-                                onClick={() => removeClient(index)}
-                                className="mt-5 shadow-none hover:shadow-none bg-red-500 hover:bg-opacity-80 transition-all duration-300 ease-in-out text-xs font-medium text-white px-5 py-3 rounded-md"
-                              >
-                                Remove
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
+                          {formik.values.clients.length !== 1 && (
+                            <button
+                              onClick={() => removeClient(index)}
+                              className="mt-5 shadow-none hover:shadow-none bg-red-500 hover:bg-opacity-80 transition-all duration-300 ease-in-out text-xs font-medium text-white px-5 py-3 rounded-md"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                )}
+                </div>
 
                 {/* BUTTONS ROW */}
                 <div className="col-span-3 mt-7 w-full flex items-center justify-end gap-5">
                   {allOrdersList?.length !== 1 && (
                     <button
-                      onClick={() => removeRow(index)}
+                      onClick={() => {
+                        removeRow(index);
+                      }}
                       className="bg-red-500 bg-opacity-15 hover:bg-opacity-30 transition-all duration-300 ease-in-out border border-red-500 border-opacity-30 text-sm font-medium text-red-500 px-5 py-2 rounded-md"
                     >
                       Remove
